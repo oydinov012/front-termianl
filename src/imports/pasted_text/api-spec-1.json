@@ -1,0 +1,374 @@
+
+Search...
+api
+nano
+task
+terminal
+redocly logoAPI docs by Redocly
+(0.0.0)
+Download OpenAPI specification:Download
+
+api
+api_auth_login_create
+Takes a set of user credentials and returns an access and refresh JSON web token pair to prove the authentication of those credentials.
+
+Request Body schema: 
+application/json
+application/json
+required
+username
+required
+string
+password
+required
+string
+Responses
+200
+
+post
+/api/auth/login/
+Request samples
+Payload
+Content type
+
+application/json
+application/json
+
+Copy
+{
+"username": "string",
+"password": "string"
+}
+Response samples
+200
+Content type
+application/json
+
+Copy
+{
+"access": "string",
+"refresh": "string"
+}
+api_auth_register_create
+Authorizations:
+jwtAuthNone
+Request Body schema: 
+application/json
+application/json
+required
+username
+required
+string <= 150 characters ^[\w.@+-]+$
+Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+
+email	
+string <email> (Email address) <= 254 characters
+password
+required
+string
+Responses
+201
+
+post
+/api/auth/register/
+Request samples
+Payload
+Content type
+
+application/json
+application/json
+
+Copy
+{
+"username": "string",
+"email": "user@example.com",
+"password": "string"
+}
+Response samples
+201
+Content type
+application/json
+
+Copy
+{
+"username": "string",
+"email": "user@example.com"
+}
+api_auth_token_refresh_create
+Takes a refresh type JSON web token and returns an access type JSON web token if the refresh token is valid.
+
+Request Body schema: 
+application/json
+application/json
+required
+refresh
+required
+string
+Responses
+200
+
+post
+/api/auth/token/refresh/
+Request samples
+Payload
+Content type
+
+application/json
+application/json
+
+Copy
+{
+"refresh": "string"
+}
+Response samples
+200
+Content type
+application/json
+
+Copy
+{
+"access": "string"
+}
+api_profile_list
+Authorizations:
+jwtAuth
+Responses
+200
+
+get
+/api/profile/
+Response samples
+200
+Content type
+application/json
+
+Copy
+Expand allCollapse all
+[
+{
+"username": "string",
+"password": "string",
+"first_name": "string",
+"last_name": "string",
+"email": "user@example.com"
+}
+]
+api_profile1_retrieve
+Authorizations:
+jwtAuth
+path Parameters
+id
+required
+integer
+Responses
+200
+
+get
+/api/profile1/{id}/
+Response samples
+200
+Content type
+application/json
+
+Copy
+{
+"username": "string",
+"password": "string",
+"first_name": "string",
+"last_name": "string",
+"email": "user@example.com"
+}
+api_profile1_update
+Authorizations:
+jwtAuth
+path Parameters
+id
+required
+integer
+Request Body schema: 
+application/json
+application/json
+required
+username
+required
+string <= 150 characters ^[\w.@+-]+$
+Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+
+password
+required
+string <= 128 characters
+first_name	
+string <= 150 characters
+last_name	
+string <= 150 characters
+email	
+string <email> (Email address) <= 254 characters
+Responses
+200
+
+put
+/api/profile1/{id}/
+Request samples
+Payload
+Content type
+
+application/json
+application/json
+
+Copy
+{
+"username": "string",
+"password": "string",
+"first_name": "string",
+"last_name": "string",
+"email": "user@example.com"
+}
+Response samples
+200
+Content type
+application/json
+
+Copy
+{
+"username": "string",
+"password": "string",
+"first_name": "string",
+"last_name": "string",
+"email": "user@example.com"
+}
+api_profile1_partial_update
+Authorizations:
+jwtAuth
+path Parameters
+id
+required
+integer
+Request Body schema: 
+application/json
+application/json
+username	
+string <= 150 characters ^[\w.@+-]+$
+Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+
+password	
+string <= 128 characters
+first_name	
+string <= 150 characters
+last_name	
+string <= 150 characters
+email	
+string <email> (Email address) <= 254 characters
+Responses
+200
+
+patch
+/api/profile1/{id}/
+Request samples
+Payload
+Content type
+
+application/json
+application/json
+
+Copy
+{
+"username": "string",
+"password": "string",
+"first_name": "string",
+"last_name": "string",
+"email": "user@example.com"
+}
+Response samples
+200
+Content type
+application/json
+
+Copy
+{
+"username": "string",
+"password": "string",
+"first_name": "string",
+"last_name": "string",
+"email": "user@example.com"
+}
+api_profile1_destroy
+Authorizations:
+jwtAuth
+path Parameters
+id
+required
+integer
+Responses
+204 No response body
+
+delete
+/api/profile1/{id}/
+api_schema_retrieve
+OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+YAML: application/vnd.oai.openapi
+JSON: application/vnd.oai.openapi+json
+Authorizations:
+jwtAuthNone
+query Parameters
+format	
+string
+Enum: "json" "yaml"
+lang	
+string
+Enum: "af" "ar" "ar-dz" "ast" "az" "be" "bg" "bn" "br" "bs" "ca" "ckb" "cs" "cy" "da" "de" "dsb" "el" "en" "en-au" "en-gb" "eo" "es" "es-ar" "es-co" "es-mx" "es-ni" "es-ve" "et" "eu" "fa" "fi" "fr" "fy" "ga" "gd" "gl" "he" "hi" "hr" "hsb" "ht" "hu" "hy" "ia" "id" "ig" "io" "is" "it" "ja" "ka" "kab" "kk" "km" "kn" "ko" "ky" "lb" "lt" "lv" "mk" "ml" "mn" "mr" "ms" "my" "nb" "ne" "nl" "nn" "os" "pa" "pl" "pt" "pt-br" "ro" "ru" "sk" "sl" "sq" "sr" "sr-latn" "sv" "sw" "ta" "te" "tg" "th" "tk" "tr" "tt" "udm" "ug" "uk" "ur" "uz" "vi" "zh-hans" "zh-hant"
+Responses
+200
+
+get
+/api/schema/
+Response samples
+200
+Content type
+
+application/vnd.oai.openapi
+application/vnd.oai.openapi
+No sample
+nano
+nano_retrieve
+Authorizations:
+jwtAuth
+Responses
+200 No response body
+
+get
+/nano/
+nano_save_create
+Authorizations:
+jwtAuth
+Responses
+200 No response body
+
+post
+/nano/save/
+task
+task_retrieve
+Authorizations:
+jwtAuth
+Responses
+200 No response body
+
+get
+/task/
+task_create
+Authorizations:
+jwtAuth
+Responses
+200 No response body
+
+post
+/task/
+terminal
+terminal_create
+Authorizations:
+jwtAuth
+Responses
+200 No response body
+
+post
+/terminal/
