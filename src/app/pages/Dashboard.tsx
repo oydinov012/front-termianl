@@ -1,570 +1,841 @@
-  //     -------figma------
+// // import React, { useState, useRef, useEffect } from 'react';
+// // import { useAuth } from '../context/AuthContext';
+// // import { useNavigate } from 'react-router-dom';
+// // import {
+// //   Box,
+// //   Paper,
+// //   Button,
+// //   Typography,
+// //   Avatar,
+// //   Menu,
+// //   MenuItem,
+// //   IconButton,
+// //   LinearProgress,
+// //   Card,
+// //   CardContent,
+// //   Snackbar,
+// //   Alert,
+// // } from '@mui/material';
+// // import {
+// //   Trash2,
+// //   ChevronDown,
+// //   Folder,
+// //   File,
+// //   Terminal as TerminalIcon,
+// //   CheckCircle,
+// //   Play,
+// //   Save,
+// //   X,
+// // } from 'lucide-react';
+// // import api from '../config/api';
+
+// // interface CommandHistory {
+// //   command: string;
+// //   output: string;
+// //   timestamp: Date;
+// // }
+
+// // interface ActiveTask {
+// //   task_id: number;
+// //   title: string;
+// //   description: string;
+// //   level: number;
+// //   xp: number;
+// //   status: string;
+// //   structure: Record<string, any>; 
+// //   formatted_structure: string;
+// // }
+
+// // interface UserProfile {
+// //   level: number;
+// //   xp: number;
+// //   success_streak: number;
+// //   failed_attempts: number;
+// //   total_completed_tasks: number;
+// // }
+
+// // interface FileListVisualizerProps {
+// //   structure: string[] | Record<string, any> | null;
+// // }
+
+// // // 📂 Fayllar ierarxiyasini chizuvchi komponent
+// // const FileListVisualizer: React.FC<FileListVisualizerProps> = ({ structure }) => {
+// //   if (!structure || (Array.isArray(structure) && structure.length === 0)) {
+// //     return (
+// //       <Typography variant="body2" sx={{ color: '#666', fontStyle: 'italic', textAlign: 'center', mt: 4, fontFamily: 'monospace' }}>
+// //         Papka bo'sh. Terminalda buyruqlar yordamida fayl yarating...
+// //       </Typography>
+// //     );
+// //   }
+
+// //   if (Array.isArray(structure)) {
+// //     return (
+// //       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+// //         {structure.map((item, idx) => {
+// //           const isFolder = !item.includes('.') && !item.includes('_txt') && !item.includes('_png');
+// //           return (
+// //             <Box key={idx} sx={{ display: 'flex', alignItems: 'center', gap: 1, py: 0.2, pl: 1 }}>
+// //               {isFolder ? (
+// //                 <Folder size={16} style={{ color: '#FFD700', fill: '#FFD700', opacity: 0.8 }} />
+// //               ) : (
+// //                 <File size={16} style={{ color: '#A0A0A0' }} />
+// //               )}
+// //               <Typography variant="body2" sx={{ color: '#E0E0E0', fontFamily: '"JetBrains Mono", monospace', fontSize: '0.85rem' }}>
+// //                 {item}{isFolder ? '/' : ''}
+// //               </Typography>
+// //             </Box>
+// //           );
+// //         })}
+// //       </Box>
+// //     );
+// //   }
+
+// //   const renderNestedTree = (data: any, name?: string) => {
+// //     if (typeof data === 'string') {
+// //       return (
+// //         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, pl: 2, py: 0.2 }}>
+// //           <File size={14} style={{ color: '#A0A0A0' }} />
+// //           <Typography variant="body2" sx={{ color: '#E0E0E0', fontFamily: '"JetBrains Mono", monospace', fontSize: '0.85rem' }}>{data}</Typography>
+// //         </Box>
+// //       );
+// //     }
+// //     if (Array.isArray(data)) {
+// //       return <>{data.map((item, idx) => <Box key={idx}>{renderNestedTree(item)}</Box>)}</>;
+// //     }
+// //     return (
+// //       <Box sx={{ pl: name ? 2 : 0 }}>
+// //         {name && (
+// //           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, py: 0.4 }}>
+// //             <Folder size={16} style={{ color: '#FFD700', fill: '#FFD700', opacity: 0.8 }} />
+// //             <Typography variant="body2" sx={{ color: '#FFF', fontWeight: 600, fontFamily: '"JetBrains Mono", monospace', fontSize: '0.85rem' }}>
+// //               {name}/
+// //             </Typography>
+// //           </Box>
+// //         )}
+// //         <Box sx={{ borderLeft: name ? '1px dashed rgba(255,255,255,0.15)' : 'none', ml: name ? 1 : 0 }}>
+// //           {Object.keys(data).map((key) => (
+// //             <Box key={key}>{renderNestedTree(data[key], key)}</Box>
+// //           ))}
+// //         </Box>
+// //       </Box>
+// //     );
+// //   };
+
+// //   return <Box>{renderNestedTree(structure)}</Box>;
+// // };
+
+// // export default function Dashboard() {
+// //   const { user, logout } = useAuth();
+// //   const navigate = useNavigate();
+
+// //   // Shon-sharaf va holat shtatlari
+// //   const [command, setCommand] = useState('');
+// //   const [history, setHistory] = useState<CommandHistory[]>([]);
+// //   const [loading, setLoading] = useState(false);
+// //   const [currentDirectory, setCurrentDirectory] = useState('~'); 
+
+// //   // Nano Editor sozlamalari
+// //   const [isNanoActive, setIsNanoActive] = useState(false);
+// //   const [nanoFileName, setNanoFileName] = useState('');
+// //   const [nanoContent, setNanoContent] = useState('');
+
+// //   // API ma'lumotlari
+// //   const [activeTask, setActiveTask] = useState<ActiveTask | null>(null);
+// //   const [userStructure, setUserStructure] = useState<string[] | null>(null); 
+// //   const [profile, setProfile] = useState<UserProfile | null>(null);
+
+// //   // UI boshqaruvlari
+// //   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+// //   const [success, setSuccess] = useState(false);
+// //   const [successMessage, setSuccessMessage] = useState('');
+// //   const [error, setError] = useState('');
+
+// //   const terminalEndRef = useRef<HTMLDivElement>(null);
+// //   const inputRef = useRef<HTMLInputElement>(null);
+// //   const nanoTextAreaRef = useRef<HTMLTextAreaElement>(null);
+
+// //   const focusInput = () => {
+// //     if (!isNanoActive && inputRef.current) {
+// //       inputRef.current.focus();
+// //     } else if (isNanoActive && nanoTextAreaRef.current) {
+// //       nanoTextAreaRef.current.focus();
+// //     }
+// //   };
+
+// //   const fetchUserProfile = async () => {
+// //     try {
+// //       const res = await api.get('/api/profile/');
+// //       if (Array.isArray(res.data) && res.data.length > 0) {
+// //         setProfile(res.data[0]);
+// //       }
+// //     } catch (err) {
+// //       console.error("Profilni yuklashda xatolik yuz berdi.");
+// //     }
+// //   };
+
+// //   useEffect(() => {
+// //     fetchUserProfile();
+// //   }, []);
+
+// //   useEffect(() => { 
+// //     focusInput(); 
+// //   }, [isNanoActive]);
+
+// //   useEffect(() => {
+// //     if (!isNanoActive) {
+// //       terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+// //     }
+// //     focusInput();
+// //   }, [history]);
+
+// //   // Nano Hotkeys (Ctrl + O saqlash, Ctrl + X chiqish)
+// //   useEffect(() => {
+// //     const handleGlobalKeyDown = (e: KeyboardEvent) => {
+// //       if (isNanoActive) {
+// //         if (e.ctrlKey && e.key.toLowerCase() === 'o') {
+// //           e.preventDefault();
+// //           handleNanoSave();
+// //         }
+// //         if (e.ctrlKey && e.key.toLowerCase() === 'x') {
+// //           e.preventDefault();
+// //           setIsNanoActive(false);
+// //           setHistory(prev => [...prev, { command: `nano ${nanoFileName}`, output: 'GNU nano muharriri yopildi.', timestamp: new Date() }]);
+// //         }
+// //       }
+// //     };
+// //     window.addEventListener('keydown', handleGlobalKeyDown, true);
+// //     return () => window.removeEventListener('keydown', handleGlobalKeyDown, true);
+// //   }, [isNanoActive, nanoFileName, nanoContent]);
+
+// //   const handleMenu = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
+// //   const handleCloseMenu = () => setAnchorEl(null);
+// //   const handleLogout = () => { logout(); navigate('/auth'); };
+
+// //   const formatOutput = (data: any): string => {
+// //     if (!data) return 'Buyruq bajarildi.';
+// //     if (typeof data === 'string') return data;
+// //     if (typeof data === 'object') {
+// //       if (data.result && data.result.output) return data.result.output;
+// //       return data.output || data.message || JSON.stringify(data, null, 2);
+// //     }
+// //     return String(data);
+// //   };
+
+// //   const handleNanoSave = async () => {
+// //     setLoading(true);
+// //     try {
+// //       const res = await api.post('/terminal/', {
+// //         command: `nano ${nanoFileName}`,
+// //         content: nanoContent
+// //       });
+// //       if (res.data.result && res.data.result.status) {
+// //         setSuccessMessage(res.data.result.status);
+// //         setSuccess(true);
+// //         if (res.data.structure) {
+// //           setUserStructure(res.data.structure);
+// //         }
+// //       }
+// //     } catch (err: any) {
+// //       setError('Faylni saqlashda xatolik yuz berdi.');
+// //     } finally {
+// //       setLoading(false);
+// //     }
+// //   };
+
+// //   const handleCommandSubmit = async (e: React.FormEvent) => {
+// //     e.preventDefault();
+// //     if (!command.trim() || loading) return;
+
+// //     const currentCommand = command.trim();
+// //     setCommand('');
+// //     setLoading(true);
+
+// //     if (currentCommand.toLowerCase() === 'clear') {
+// //       setHistory([]);
+// //       setLoading(false);
+// //       setTimeout(focusInput, 10);
+// //       return;
+// //     }
+
+// //     if (currentCommand.startsWith('nano ')) {
+// //       const fileName = currentCommand.split(/\s+/)[1] || 'unnamed.txt';
+// //       setNanoFileName(fileName);
+// //       try {
+// //         const res = await api.post('/terminal/', { command: currentCommand });
+// //         const nanoResult = res.data.result;
+// //         if (nanoResult && nanoResult.content !== undefined) {
+// //           setNanoContent(nanoResult.content);
+// //         } else {
+// //           setNanoContent('');
+// //         }
+// //         setIsNanoActive(true);
+// //       } catch (err: any) {
+// //         setHistory((prev) => [...prev, { command: currentCommand, output: "Faylni ochishda xatolik yuklandi.", timestamp: new Date() }]);
+// //       } finally {
+// //         setLoading(false);
+// //       }
+// //       return;
+// //     }
+
+// //     try {
+// //       const res = await api.post('/terminal/', { command: currentCommand });
+// //       const responseData = res.data;
+
+// //       if (responseData.current_path) {
+// //         setCurrentDirectory(responseData.current_path);
+// //       }
+
+// //       if (responseData.structure) {
+// //         setUserStructure(responseData.structure);
+// //       }
+
+// //       if (currentCommand.toLowerCase() === 'check' && responseData.result?.status?.includes('correct')) {
+// //         setSuccessMessage('Topshiriq muvaffaqiyatli bajarildi! 🎉');
+// //         setSuccess(true);
+// //         setActiveTask(null); 
+// //         setUserStructure(null);
+// //         fetchUserProfile(); 
+// //       }
+
+// //       setHistory((prev) => [
+// //         ...prev,
+// //         { command: currentCommand, output: formatOutput(responseData), timestamp: new Date() },
+// //       ]);
+// //     } catch (err: any) {
+// //       setHistory((prev) => [
+// //         ...prev,
+// //         { command: currentCommand, output: formatOutput(err.response?.data || 'Xatolik yuz berdi.'), timestamp: new Date() },
+// //       ]);
+// //     } finally {
+// //       setLoading(false);
+// //       setTimeout(focusInput, 10);
+// //     }
+// //   };
+
+// //   const handleGetTask = async () => {
+// //     setLoading(true);
+// //     try {
+// //       const res = await api.get('/task/');
+// //       if (res.data) {
+// //         setActiveTask({
+// //           task_id: res.data.task_id, title: res.data.title, description: res.data.description,
+// //           level: res.data.level, xp: res.data.xp, status: res.data.status,
+// //           structure: res.data.structure, formatted_structure: res.data.formatted_structure,
+// //         });
+// //         setUserStructure([]); 
+// //       }
+// //     } catch (err) {
+// //       setError("Yangi topshiriqni yuklab bo'lmadi.");
+// //     } finally {
+// //       setLoading(false);
+// //     }
+// //   };
+
+// //   const currentXpPercentage = profile ? Math.min((profile.xp / 100) * 100, 100) : 0;
+
+// //   return (
+// //     <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column', bgcolor: '#0A0A0A', overflow: 'hidden' }}>
+      
+// //       {/* 🟢 TOP NAVBAR */}
+// //       <Paper elevation={0} sx={{ bgcolor: '#121212', borderBottom: '1px solid rgba(57, 255, 20, 0.2)', px: 3, py: 1.2, zIndex: 10 }}>
+// //         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+// //           <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+// //             <Avatar sx={{ bgcolor: '#39FF14', color: '#121212', width: 38, height: 38, fontWeight: 700 }}>
+// //               {user?.username ? user.username[0].toUpperCase() : 'U'}
+// //             </Avatar>
+// //             <Box>
+// //               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+// //                 <Typography sx={{ color: '#FFF', fontWeight: 600, fontSize: '0.95rem' }}>{user?.username || 'Foydalanuvchi'}</Typography>
+// //                 <Typography variant="caption" sx={{ bgcolor: 'rgba(57, 255, 20, 0.1)', color: '#39FF14', px: 1, py: 0.2, borderRadius: 1, fontSize: '0.75rem', fontWeight: 'bold' }}>
+// //                   LVL {profile?.level || 1}
+// //                 </Typography>
+// //               </Box>
+// //               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, width: 220, mt: 0.5 }}>
+// //                 <LinearProgress variant="determinate" value={currentXpPercentage} sx={{ flex: 1, height: 4, bgcolor: '#2A2A2A', borderRadius: 2, '& .MuiLinearProgress-bar': { bgcolor: '#39FF14' } }} />
+// //                 <Typography variant="caption" sx={{ color: '#666', fontSize: '0.7rem', whiteSpace: 'nowrap' }}>{profile?.xp || 0} / 100 XP</Typography>
+// //               </Box>
+// //             </Box>
+// //           </Box>
+          
+// //           <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+// //             <Box sx={{ display: 'flex', gap: 2 }}>
+// //               <Typography variant="caption" sx={{ color: '#B0B0B0' }}>Streak: <span style={{ color: '#39FF14', fontWeight: 'bold' }}>{profile?.success_streak || 0} 🔥</span></Typography>
+// //               <Typography variant="caption" sx={{ color: '#B0B0B0' }}>Bitirildi: <span style={{ color: '#FFF', fontWeight: 'bold' }}>{profile?.total_completed_tasks || 0}</span></Typography>
+// //             </Box>
+// //             <IconButton onClick={handleMenu} sx={{ color: '#39FF14' }} title="Sozlamalar"><ChevronDown size={18} /></IconButton>
+// //           </Box>
+          
+// //           <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu}>
+// //             <MenuItem onClick={handleLogout}>Chiqish</MenuItem>
+// //           </Menu>
+// //         </Box>
+// //       </Paper>
+
+// //       {/* 🟢 INTERFEYS MAKETI (42% TEPASI, 58% PASTKI TERMINAL - QISILISH MUAMMOSI YECHILDI) */}
+// //       <Box sx={{ 
+// //         flex: 1, 
+// //         display: 'grid', 
+// //         gridTemplateColumns: '1fr 1fr', 
+// //         gridTemplateRows: '42% 58%', 
+// //         gap: 2, 
+// //         p: 2, 
+// //         overflow: 'hidden',
+// //         height: 'calc(100vh - 65px)' 
+// //       }}>
+        
+// //         {/* 📦 CHAP TEPADA: TASK PANEL */}
+// //         <Card sx={{ bgcolor: '#121212', border: '1px solid rgba(57, 255, 20, 0.15)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+// //           <Box sx={{ bgcolor: '#1A1A1A', px: 2, py: 1, borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+// //             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+// //               <CheckCircle size={14} style={{ color: '#39FF14' }} />
+// //               <Typography variant="subtitle2" sx={{ color: '#39FF14', fontWeight: 600, fontSize: '0.85rem' }}>Joriy Topshiriq</Typography>
+// //             </Box>
+// //             {!activeTask && (
+// //               <Button size="small" variant="outlined" onClick={handleGetTask} startIcon={<Play size={12} />} sx={{ color: '#39FF14', borderColor: '#39FF14', fontSize: '0.75rem', py: 0.2, '&:hover': { borderColor: '#2ECC11', bgcolor: 'rgba(57, 255, 20, 0.05)' } }}>
+// //                 Topshiriq Olish
+// //               </Button>
+// //             )}
+// //           </Box>
+// //           <CardContent sx={{ flex: 1, overflowY: 'auto', p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
+// //             {activeTask ? (
+// //               <>
+// //                 <Typography variant="h6" sx={{ color: '#FFF', fontSize: '1rem', fontWeight: 600 }}>{activeTask.title}</Typography>
+// //                 <Typography variant="body2" sx={{ color: '#B0B0B0', fontSize: '0.85rem', lineHeight: 1.5 }}>{activeTask.description}</Typography>
+// //                 {activeTask.formatted_structure && (
+// //                   <Box sx={{ mt: 'auto', bgcolor: '#000', p: 1, borderRadius: 1, border: '1px solid #2A2A2A' }}>
+// //                     <Typography variant="caption" sx={{ color: '#FF8C00', fontWeight: 'bold', display: 'block', mb: 0.5 }}>Kutilayotgan ierarxiya:</Typography>
+// //                     <Typography variant="body2" sx={{ fontFamily: 'monospace', color: '#00FF66', fontSize: '0.8rem', whiteSpace: 'pre-wrap' }}>
+// //                       {activeTask.formatted_structure}
+// //                     </Typography>
+// //                   </Box>
+// //                 )}
+// //               </>
+// //             ) : (
+// //               <Box sx={{ display: 'flex', flex1: 1, alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+// //                 <Typography variant="body2" sx={{ color: '#666', textAlign: 'center' }}>Sizda faol topshiriq yo'q. Tizimdan yangisini yuklab oling.</Typography>
+// //               </Box>
+// //             )}
+// //           </CardContent>
+// //         </Card>
+
+// //         {/* 📦 O'NG TEPADA: VIZUAL STRUKTURA */}
+// //         <Card sx={{ bgcolor: '#121212', border: '1px solid rgba(57, 255, 20, 0.15)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+// //           <Box sx={{ bgcolor: '#1A1A1A', px: 2, py: 1, borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', gap: 1 }}>
+// //             <Folder size={14} style={{ color: '#FFD700' }} />
+// //             <Typography variant="subtitle2" sx={{ color: '#FFD700', fontWeight: 600, fontSize: '0.85rem' }}>Sandbox Fayllar Tizimi</Typography>
+// //           </Box>
+// //           <CardContent sx={{ flex: 1, overflowY: 'auto', p: 2, bgcolor: '#0F0F0F' }}>
+// //             <FileListVisualizer structure={userStructure} />
+// //           </CardContent>
+// //         </Card>
+
+// //         {/* 📟 PASTI: PROFESSIONAL TERMINAL OYNASI VA NANO EDITOR */}
+// //         <Card sx={{ 
+// //           gridColumn: '1 / -1', 
+// //           bgcolor: '#000', 
+// //           border: '1px solid rgba(57, 255, 20, 0.25)', 
+// //           display: 'flex', 
+// //           flexDirection: 'column', 
+// //           overflow: 'hidden' 
+// //         }}>
+// //           {/* Terminal Header */}
+// //           <Box sx={{ bgcolor: '#1A1A1A', px: 2, py: 0.8, borderBottom: '1px solid rgba(57, 255, 20, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+// //             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+// //               <TerminalIcon size={14} style={{ color: '#39FF14' }} />
+// //               <Typography variant="caption" sx={{ color: '#B0B0B0', fontFamily: 'monospace', letterSpacing: 0.5 }}>
+// //                 {isNanoActive ? `GNU nano v5.0 — ${nanoFileName}` : `ilyos@cloud-sandbox: ${currentDirectory}`}
+// //               </Typography>
+// //             </Box>
+// //             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+// //               <IconButton size="small" onClick={() => setHistory([])} disabled={isNanoActive} title="Ekranni tozalash">
+// //                 <Trash2 size={14} style={{ color: isNanoActive ? '#333' : '#666' }} />
+// //               </IconButton>
+// //             </Box>
+// //           </Box>
+
+// //           {/* Terminal Asosiy Tana Qismi (Zich va ixcham dizayn) */}
+// //           <Box onClick={focusInput} sx={{ flex: 1, overflowY: 'auto', p: 2, display: 'flex', flexDirection: 'column', position: 'relative' }}>
+            
+// //             {/* 🔴 NANO MUHIT REJIMI OCHILGANDA */}
+// //             {isNanoActive ? (
+// //               <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}>
+// //                 <textarea
+// //                   ref={nanoTextAreaRef}
+// //                   value={nanoContent}
+// //                   onChange={(e) => setNanoContent(e.target.value)}
+// //                   style={{
+// //                     flex: 1,
+// //                     backgroundColor: '#000',
+// //                     color: '#FFF',
+// //                     border: 'none',
+// //                     outline: 'none',
+// //                     resize: 'none',
+// //                     fontFamily: '"JetBrains Mono", "Fira Code", monospace',
+// //                     fontSize: '0.9rem',
+// //                     lineHeight: '1.4',
+// //                   }}
+// //                   placeholder="Matnni shu yerga yozing..."
+// //                 />
+// //                 {/* Nano Pastki Paneli (Xuddi Linuxdagidek) */}
+// //                 <Box sx={{ bgcolor: '#FFF', color: '#000', display: 'flex', gap: 4, px: 1, py: 0.2, fontSize: '0.75rem', fontFamily: 'monospace', fontWeight: 'bold' }}>
+// //                   <Box sx={{ display: 'flex', gap: 0.5 }}><Typography variant="caption" sx={{ fontWeight: 900 }}>^O</Typography> Saqlash (WriteOut)</Box>
+// //                   <Box sx={{ display: 'flex', gap: 0.5 }}><Typography variant="caption" sx={{ fontWeight: 900 }}>^X</Typography> Chiqish (Exit)</Box>
+// //                 </Box>
+// //               </Box>
+// //             ) : (
+// //               /* 🟢 STANDART TERMINAL REJIMI */
+// //               <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+// //                 <Typography sx={{ color: '#555', fontSize: '0.8rem', fontFamily: 'monospace', mb: 1, lineHeight: 1.3 }}>
+// //                   Welcome to Cloud Terminal v1.0.4. Type 'help' for layout commands. Enter 'check' to verify task.
+// //                   <br />═══════════════════════════════════════════════════════
+// //                 </Typography>
+
+// //                 {history.map((item, index) => (
+// //                   <Box key={index} sx={{ mb: 1 }}>
+// //                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+// //                       <Typography sx={{ color: '#39FF14', fontFamily: 'monospace', fontSize: '0.85rem', fontWeight: 'bold' }}>
+// //                         user@sandbox:{currentDirectory}$
+// //                       </Typography>
+// //                       <Typography sx={{ color: '#FFF', fontFamily: 'monospace', fontSize: '0.85rem' }}>
+// //                         {item.command}
+// //                       </Typography>
+// //                     </Box>
+// //                     <Typography sx={{ color: '#A9FF99', whiteSpace: 'pre-wrap', pl: 2, mt: 0.2, fontFamily: 'monospace', fontSize: '0.85rem', lineHeight: 1.4 }}>
+// //                       {item.output}
+// //                     </Typography>
+// //                   </Box>
+// //                 ))}
+
+// //                 {loading && (
+// //                   <Typography sx={{ color: '#FFD700', fontFamily: 'monospace', fontSize: '0.85rem', mt: 1 }}>
+// //                     Bajarilmoqda...
+// //                   </Typography>
+// //                 )}
+// //                 <div ref={terminalEndRef} />
+// //               </Box>
+// //             )}
+// //           </Box>
+
+// //           {/* Terminal Input qismi (Faqat Nano yopiqligida ko'rinadi) */}
+// //           {!isNanoActive && (
+// //             <Box sx={{ bgcolor: '#050505', px: 2, py: 1, borderTop: '1px solid rgba(57, 255, 20, 0.1)' }}>
+// //               <form onSubmit={handleCommandSubmit} style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+// //                 <Typography sx={{ color: '#39FF14', fontFamily: 'monospace', fontSize: '0.85rem', fontWeight: 'bold', mr: 1, whiteSpace: 'nowrap' }}>
+// //                   user@sandbox:{currentDirectory}$
+// //                 </Typography>
+// //                 <input
+// //                   ref={inputRef}
+// //                   type="text"
+// //                   value={command}
+// //                   onChange={(e) => setCommand(e.target.value)}
+// //                   disabled={loading}
+// //                   placeholder="Buyruqni kiriting..."
+// //                   style={{
+// //                     flex: 1,
+// //                     background: 'transparent',
+// //                     border: 'none',
+// //                     outline: 'none',
+// //                     color: '#39FF14',
+// //                     fontFamily: '"JetBrains Mono", "Fira Code", monospace',
+// //                     fontSize: '0.85rem',
+// //                   }}
+// //                 />
+// //               </form>
+// //             </Box>
+// //           )}
+// //         </Card>
+// //       </Box>
+
+// //       {/* 🟢 NOTIFICATION TIZIMI */}
+// //       <Snackbar open={success} autoHideDuration={4000} onClose={() => setSuccess(false)}>
+// //         <Alert severity="success" sx={{ bgcolor: '#121212', color: '#39FF14', border: '1px solid #39FF14' }}>
+// //           {successMessage}
+// //         </Alert>
+// //       </Snackbar>
+
+// //       <Snackbar open={!!error} autoHideDuration={4000} onClose={() => setError('')}>
+// //         <Alert severity="error" sx={{ bgcolor: '#121212', color: '#FF4444', border: '1px solid #FF4444' }}>
+// //           {error}
+// //         </Alert>
+// //       </Snackbar>
+// //     </Box>
+// //   );
+// // }
+
+
 // import React, { useState, useRef, useEffect } from 'react';
-// import { useAuth } from '../context/AuthContext';
-// import {
-//   Box,
-//   Paper,
-//   TextField,
-//   Button,
-//   Typography,
-//   Avatar,
-//   Menu,
-//   MenuItem,
-//   IconButton,
-//   LinearProgress,
-//   Card,
-//   CardContent,
-//   Divider,
-//   Dialog,
-//   DialogTitle,
-//   DialogContent,
-//   DialogActions,
-//   Snackbar,
-//   Alert,
-//   Chip,
-// } from '@mui/material';
-// import {
-//   Send,
-//   Trash2,
-//   LogOut,
-//   User,
-//   Flame,
-//   XCircle,
-//   CheckCircle2,
-//   Play,
-//   ChevronDown,
-// } from 'lucide-react';
+// import { Box, Card, IconButton, Typography, Snackbar, Alert } from '@mui/material';
+// import { Trash2, Terminal as TerminalIcon, Folder } from 'lucide-react';
 // import { useNavigate } from 'react-router-dom';
+
+// // ==========================================
+// // 🟢 IMPORT QISMI (Komponentlar va API sozlamalari)
+// // ==========================================
 // import api from '../config/api';
-
-// interface CommandHistory {
-//   command: string;
-//   output: string;
-//   timestamp: Date;
-// }
-
-// interface UserStats {
-//   level: number;
-//   xp: number;
-//   maxXp: number;
-//   successStreak: number;
-//   failedAttempts: number;
-//   totalCompleted: number;
-// }
+// import { useAuth } from '../context/AuthContext';
+// import { UserProfileHeader } from '../components/UserProfileHeader';
+// import { TaskPanel } from '../components/TaskPanel';
+// import { NanoEditor } from '../components/NanoEditor';
+// import { TerminalConsole } from '../components/TerminalConsole';
+// import FileListVisualizer from '../components/FileListVisualizer'; 
 
 // export default function Dashboard() {
 //   const { user, logout } = useAuth();
 //   const navigate = useNavigate();
+
+//   // ==========================================
+//   // 🟢 STATE-LAR (Holatlar boshqaruvi)
+//   // ==========================================
 //   const [command, setCommand] = useState('');
-//   const [history, setHistory] = useState<CommandHistory[]>([]);
+//   const [history, setHistory] = useState<any[]>([]);
 //   const [loading, setLoading] = useState(false);
-//   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-//   const [editProfileOpen, setEditProfileOpen] = useState(false);
-//   const [taskTitle, setTaskTitle] = useState('');
-//   const [taskDescription, setTaskDescription] = useState('');
+//   const [currentDirectory, setCurrentDirectory] = useState('~'); 
+  
+//   // 🖥 Nano muharriri uchun kerakli statelar
+//   const [isNanoActive, setIsNanoActive] = useState(false); // Nano rejimi yoqilgan/o'chirilganligi
+//   const [nanoFileName, setNanoFileName] = useState('');     // Ochilgan fayl nomi
+//   const [nanoContent, setNanoContent] = useState('');       // Fayl ichidagi matn (Kontent)
+  
+//   // 📋 Topshiriq va foydalanuvchi ma'lumotlari statelari
+//   const [activeTask, setActiveTask] = useState<any>(null);
+//   const [userStructure, setUserStructure] = useState<any>(null);
+//   const [profile, setProfile] = useState<any>(null);
+  
+//   // 🔔 Bildirishnomalar statelari (Toast Notification)
 //   const [success, setSuccess] = useState(false);
+//   const [successMessage, setSuccessMessage] = useState('');
 //   const [error, setError] = useState('');
+
+//   // ==========================================
+//   // 🟢 REF-LAR (Fokus va Avto-scroll boshqaruvi)
+//   // ==========================================
 //   const terminalEndRef = useRef<HTMLDivElement>(null);
+//   const inputRef = useRef<HTMLInputElement>(null);
+//   const nanoTextAreaRef = useRef<HTMLTextAreaElement>(null);
 
-//   // Mock stats - replace with real API data
-//   const [stats, setStats] = useState<UserStats>({
-//     level: 5,
-//     xp: 350,
-//     maxXp: 500,
-//     successStreak: 12,
-//     failedAttempts: 3,
-//     totalCompleted: 28,
-//   });
-
-//   useEffect(() => {
-//     terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-//   }, [history]);
-
-//   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-//     setAnchorEl(event.currentTarget);
+//   // 🎯 Fokusni boshqarish: Nano yoniqligiga qarab kerakli oynaga fokus beradi
+//   const focusInput = () => {
+//     if (!isNanoActive && inputRef.current) inputRef.current.focus();
+//     else if (isNanoActive && nanoTextAreaRef.current) nanoTextAreaRef.current.focus();
 //   };
 
-//   const handleCloseMenu = () => {
-//     setAnchorEl(null);
-//   };
-
-//   const handleLogout = () => {
-//     logout();
-//     navigate('/auth');
-//   };
-
-//   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault();
-//     if (!command.trim()) return;
-
-//     setLoading(true);
-//     const currentCommand = command;
-//     setCommand('');
-
+//   // ==========================================
+//   // 🟢 EFFEKTLAR (Side Effects)
+//   // ==========================================
+  
+//   // 👤 Profil ma'lumotlarini backenddan yuklab olish qismi
+//   const fetchUserProfile = async () => {
 //     try {
-//       const response = await api.post('/terminal/', {
-//         command: currentCommand,
-//       });
-
-//       setHistory((prev) => [
-//         ...prev,
-//         {
-//           command: currentCommand,
-//           output: response.data.output || response.data.result || 'Command executed successfully',
-//           timestamp: new Date(),
-//         },
-//       ]);
-//     } catch (error: any) {
-//       setHistory((prev) => [
-//         ...prev,
-//         {
-//           command: currentCommand,
-//           output: error.response?.data?.error || 'Command failed',
-//           timestamp: new Date(),
-//         },
-//       ]);
-//     } finally {
-//       setLoading(false);
+//       const res = await api.get('/api/profile/');
+//       if (Array.isArray(res.data) && res.data.length > 0) setProfile(res.data[0]);
+//     } catch (err) {
+//       console.error("Profil ma'lumotlarini yuklashda xatolik.");
 //     }
 //   };
 
-//   const handleRunTask = async () => {
-//     if (!taskTitle.trim()) {
-//       setError('Task title is required');
+//   useEffect(() => { fetchUserProfile(); }, []);
+//   useEffect(() => { focusInput(); }, [isNanoActive, history]);
+
+//   // ==========================================
+//   // ⌨️ GNU NANO HOTKEY (Klaviatura tugmalari boshqaruvi)
+//   // ==========================================
+//   useEffect(() => {
+//     const handleGlobalKeyDown = (e: KeyboardEvent) => {
+//       if (isNanoActive) {
+//         // 💾 Ctrl + O -> Faylni saqlash jarayoni
+//         if (e.ctrlKey && e.key.toLowerCase() === 'o') {
+//           e.preventDefault();
+//           handleNanoSave();
+//         }
+//         // ❌ Ctrl + X -> Nano muharriridan chiqish jarayoni
+//         if (e.ctrlKey && e.key.toLowerCase() === 'x') {
+//           e.preventDefault();
+//           setIsNanoActive(false); // Nano rejimini o'chirish
+          
+//           // Yangi fayllar ochilganda eski matn qolib ketmasligi uchun statelarni tozalaymiz
+//           setNanoContent(''); 
+//           setNanoFileName('');
+          
+//           setHistory(prev => [...prev, { 
+//             command: `nano ${nanoFileName}`, 
+//             output: 'GNU nano muharriridan chiqildi.', 
+//             timestamp: new Date() 
+//           }]);
+//         }
+//       }
+//     };
+//     window.addEventListener('keydown', handleGlobalKeyDown, true);
+//     return () => window.removeEventListener('keydown', handleGlobalKeyDown, true);
+//   }, [isNanoActive, nanoFileName, nanoContent]);
+
+//   // ==========================================
+//   // 💾 NANO SAQLASH FUNKSIYASI (Ctrl + O bosilganda)
+//   // ==========================================
+//   const handleNanoSave = async () => {
+//     setLoading(true);
+//     try {
+//       // Backendga joriy yozilgan matn (nanoContent) yuboriladi
+//       const res = await api.post('/terminal/', { 
+//         command: `nano ${nanoFileName}`, 
+//         content: nanoContent 
+//       });
+      
+//       if (res.data.result?.status) {
+//         setSuccessMessage('Fayl muvaffaqiyatli saqlandi! 💾');
+//         setSuccess(true);
+//         // Saqlangandan keyin fayl tizimi yangilansa, strukturani o'zgartiramiz
+//         if (res.data.structure) setUserStructure(res.data.structure);
+//       }
+//     } catch (err) { 
+//       setError('Faylni saqlashda ichki xatolik yuz berdi.'); 
+//     } finally { 
+//       setLoading(false); 
+//     }
+//   };
+
+//   // ==========================================
+//   // 🚀 TERMINAL BUYRUQLARINI REJA QILISH (Submit)
+//   // ==========================================
+//   const handleCommandSubmit = async (e: React.FormEvent) => {
+//     e.preventDefault();
+//     if (!command.trim() || loading) return;
+
+//     const currentCommand = command.trim();
+//     setCommand('');
+//     setLoading(true);
+
+//     // 🧹 Clear buyrug'i terminal tarixini tozalaydi
+//     if (currentCommand.toLowerCase() === 'clear') {
+//       setHistory([]);
+//       setLoading(false);
 //       return;
 //     }
 
+//     // 📂 NANO BUYRUG'I TERMINALDA ISHGA TUSHGANDA (Fayl ochish)
+//     if (currentCommand.startsWith('nano ')) {
+//       const fileName = currentCommand.split(/\s+/)[1] || 'unnamed.txt';
+//       setNanoFileName(fileName);
+      
+//       try {
+//         const res = await api.post('/terminal/', { command: currentCommand });
+//         const responseData = res.data;
+
+//         // 🔍 BACKEND JAVOBINI NETWORKGA MOSLAB TEKSHIRISH (Eski ma'lumot o'chib ketmasligi uchun)
+//         if (responseData.result && responseData.result.type === 'nano') {
+//           // Backend javobidagi eski content mavjud bo'lsa uni oladi, aks holda bo'sh satr
+//           const oldContent = responseData.result.content !== undefined ? responseData.result.content : '';
+          
+//           setNanoContent(oldContent); // 👈 Eski ma'lumotlar saqlangan holda editorga yuklanadi!
+//           setIsNanoActive(true);      // Nano oynasini vizual ochish
+//         }
+
+//         // Yo'llar va joriy strukturani yangilash
+//         if (responseData.current_path) setCurrentDirectory(responseData.current_path);
+//         if (responseData.structure) setUserStructure(responseData.structure);
+
+//       } catch (err) {
+//         setHistory((prev) => [...prev, { command: currentCommand, output: "Faylni ochib bo'lmadi.", timestamp: new Date() }]);
+//       } finally { 
+//         setLoading(false); 
+//       }
+//       return;
+//     }
+
+//     // ⚙️ ODDY BUYRUQLAR IJROSI (ls, cd, mkdir, touch, rm va hkz)
 //     try {
-//       await api.post('/task/', {
-//         title: taskTitle,
-//         description: taskDescription,
-//       });
-//       setSuccess(true);
-//       setTaskTitle('');
-//       setTaskDescription('');
-//     } catch (err) {
-//       setError('Failed to create task');
+//       const res = await api.post('/terminal/', { command: currentCommand });
+//       const responseData = res.data;
+
+//       if (responseData.current_path) setCurrentDirectory(responseData.current_path);
+//       if (responseData.structure) setUserStructure(responseData.structure);
+
+//       // ✅ CHECK buyrug'i kiritilganda topshiriqni tekshirish mantiqi
+//       if (currentCommand.toLowerCase() === 'check' && responseData.result?.status?.includes('correct')) {
+//         setSuccessMessage('Topshiriq muvaffaqiyatli bajarildi! 🎉');
+//         setSuccess(true);
+//         setActiveTask(null);
+//         setUserStructure(null);
+//         fetchUserProfile(); // Profil ochkolarini yangilash
+//       }
+
+//       setHistory((prev) => [...prev, { command: currentCommand, output: responseData.result?.output || 'Bajarildi.', timestamp: new Date() }]);
+//     } catch (err: any) {
+//       setHistory((prev) => [...prev, { command: currentCommand, output: 'Xatolik: Buyruq ijrosida muammo.', timestamp: new Date() }]);
+//     } finally { 
+//       setLoading(false); 
 //     }
 //   };
 
-//   const clearTerminal = () => {
-//     setHistory([]);
-//   };
-
-//   const getInitials = () => {
-//     if (user?.first_name && user?.last_name) {
-//       return `${user.first_name[0]}${user.last_name[0]}`.toUpperCase();
-//     }
-//     return user?.username?.[0]?.toUpperCase() || 'U';
-//   };
-
-//   const xpPercentage = (stats.xp / stats.maxXp) * 100;
-
+//   // ==========================================
+//   // 🎨 VIZUAL INTERFEYS (UI Render Qismi)
+//   // ==========================================
 //   return (
-//     <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column', bgcolor: '#0A0A0A' }}>
-//       {/* Top Navbar */}
-//       <Paper
-//         elevation={0}
-//         sx={{
-//           bgcolor: '#121212',
-//           borderBottom: '1px solid rgba(57, 255, 20, 0.2)',
-//           px: 3,
-//           py: 2,
-//         }}
-//       >
-//         <Box className="flex items-center justify-between">
-//           <Box className="flex items-center gap-4">
-//             <IconButton onClick={handleMenu} sx={{ p: 0 }}>
-//               <Avatar
-//                 sx={{
-//                   bgcolor: '#39FF14',
-//                   color: '#121212',
-//                   width: 48,
-//                   height: 48,
-//                   fontWeight: 700,
-//                   border: '2px solid #39FF14',
-//                   boxShadow: '0 0 20px rgba(57, 255, 20, 0.3)',
-//                 }}
-//               >
-//                 {getInitials()}
-//               </Avatar>
-//             </IconButton>
+//     <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column', bgcolor: '#0A0A0A', overflow: 'hidden' }}>
+      
+//       {/* 👤 YUQORI PANEL: Profil va Foydalanuvchi ma'lumotlari */}
+//       <UserProfileHeader username={user?.username} profile={profile} onLogout={() => { logout(); navigate('/auth'); }} />
 
-//             <Box>
-//               <Box className="flex items-center gap-2">
-//                 <Typography sx={{ color: '#FFF', fontWeight: 700, fontSize: '1.1rem' }}>
-//                   {user?.username || 'User'}
-//                 </Typography>
-//                 <Chip
-//                   label={`Level ${stats.level}`}
-//                   size="small"
-//                   sx={{
-//                     bgcolor: 'rgba(57, 255, 20, 0.15)',
-//                     color: '#39FF14',
-//                     border: '1px solid #39FF14',
-//                     fontWeight: 700,
-//                   }}
-//                 />
-//               </Box>
-//               <Box sx={{ width: 200, mt: 0.5 }}>
-//                 <Box className="flex justify-between mb-1">
-//                   <Typography variant="caption" sx={{ color: '#B0B0B0' }}>
-//                     XP: {stats.xp}/{stats.maxXp}
-//                   </Typography>
-//                 </Box>
-//                 <LinearProgress
-//                   variant="determinate"
-//                   value={xpPercentage}
-//                   sx={{
-//                     height: 6,
-//                     borderRadius: 3,
-//                     bgcolor: '#2A2A2A',
-//                     '& .MuiLinearProgress-bar': {
-//                       bgcolor: '#39FF14',
-//                       boxShadow: '0 0 10px rgba(57, 255, 20, 0.5)',
-//                     },
-//                   }}
-//                 />
-//               </Box>
-//             </Box>
+//       {/* 🎛 ASOSIY ISHCHI SETKA (Grid Layout) */}
+//       <Box sx={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '42% 58%', gap: 2, p: 2, height: 'calc(100vh - 65px)', overflow: 'hidden' }}>
+        
+//         {/* 📝 CHAP TOMON YUQORI: Topshiriqlar paneli */}
+//         <TaskPanel activeTask={activeTask} onGetTask={async () => {
+//           try {
+//             const res = await api.get('/task/');
+//             if (res.data) { setActiveTask(res.data); setUserStructure([]); }
+//           } catch { setError("Yangi topshiriq olishda xatolik."); }
+//         }} />
+
+//         {/* 📂 O'NG TOMON YUQORI: Sandbox Fayl Tizimi Daraxti */}
+//         <Card sx={{ bgcolor: '#121212', border: '1px solid rgba(57, 255, 20, 0.15)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+//           <Box sx={{ bgcolor: '#1A1A1A', px: 2, py: 1, borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', gap: 1 }}>
+//             <Folder size={14} style={{ color: '#FFD700' }} />
+//             <Typography variant="subtitle2" sx={{ color: '#FFD700', fontWeight: 600 }}>Sandbox Fayllar Tizimi</Typography>
 //           </Box>
-
-//           <ChevronDown className="w-5 h-5" style={{ color: '#39FF14' }} />
-//         </Box>
-//       </Paper>
-
-//       {/* Profile Menu */}
-//       <Menu
-//         anchorEl={anchorEl}
-//         open={Boolean(anchorEl)}
-//         onClose={handleCloseMenu}
-//         PaperProps={{
-//           sx: {
-//             bgcolor: '#1E1E1E',
-//             border: '1px solid rgba(57, 255, 20, 0.2)',
-//             mt: 1,
-//           },
-//         }}
-//       >
-//         <MenuItem onClick={() => { setEditProfileOpen(true); handleCloseMenu(); }}>
-//           <User className="w-4 h-4 mr-2" style={{ color: '#39FF14' }} />
-//           Edit Profile
-//         </MenuItem>
-//         <Divider sx={{ borderColor: '#2A2A2A' }} />
-//         <MenuItem onClick={handleLogout} sx={{ color: '#FF4444' }}>
-//           <LogOut className="w-4 h-4 mr-2" />
-//           Logout
-//         </MenuItem>
-//       </Menu>
-
-//       {/* Main Content */}
-//       <Box sx={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: 2, p: 2 }}>
-//         {/* Top-Left: Task Creation Panel */}
-//         <Card
-//           sx={{
-//             bgcolor: '#1E1E1E',
-//             border: '1px solid rgba(57, 255, 20, 0.2)',
-//             boxShadow: '0 0 30px rgba(57, 255, 20, 0.1)',
-//           }}
-//         >
-//           <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-//             <Typography variant="h6" sx={{ color: '#39FF14', mb: 2, fontWeight: 700 }}>
-//               Create Task
-//             </Typography>
-//             <TextField
-//               fullWidth
-//               label="Task Name"
-//               value={taskTitle}
-//               onChange={(e) => setTaskTitle(e.target.value)}
-//               sx={{ mb: 2 }}
-//               InputLabelProps={{ style: { fontFamily: 'monospace' } }}
-//               inputProps={{ style: { fontFamily: 'monospace' } }}
-//             />
-//             <TextField
-//               fullWidth
-//               multiline
-//               rows={4}
-//               label="Description"
-//               value={taskDescription}
-//               onChange={(e) => setTaskDescription(e.target.value)}
-//               sx={{ mb: 2, flex: 1 }}
-//               InputLabelProps={{ style: { fontFamily: 'monospace' } }}
-//               inputProps={{ style: { fontFamily: 'monospace' } }}
-//             />
-//             <Button
-//               variant="contained"
-//               endIcon={<Play className="w-4 h-4" />}
-//               onClick={handleRunTask}
-//               sx={{
-//                 alignSelf: 'flex-end',
-//                 bgcolor: '#39FF14',
-//                 color: '#121212',
-//                 fontWeight: 700,
-//                 '&:hover': { bgcolor: '#2ECC11' },
-//               }}
-//             >
-//               Run
-//             </Button>
-//           </CardContent>
+//           <Box sx={{ flex: 1, overflowY: 'auto', p: 2, bgcolor: '#0F0F0F' }}>
+//             <FileListVisualizer structure={userStructure} />
+//           </Box>
 //         </Card>
 
-//         {/* Top-Right: Profile Stats & Streaks */}
-//         <Card
-//           sx={{
-//             bgcolor: '#1E1E1E',
-//             border: '1px solid rgba(57, 255, 20, 0.2)',
-//             boxShadow: '0 0 30px rgba(57, 255, 20, 0.1)',
-//           }}
-//         >
-//           <CardContent>
-//             <Typography variant="h6" sx={{ color: '#39FF14', mb: 3, fontWeight: 700 }}>
-//               Statistics
-//             </Typography>
-//             <Box className="grid grid-cols-3 gap-3">
-//               <Paper
-//                 sx={{
-//                   bgcolor: '#121212',
-//                   p: 2,
-//                   textAlign: 'center',
-//                   border: '1px solid rgba(255, 140, 0, 0.3)',
-//                 }}
-//               >
-//                 <Flame className="w-8 h-8 mx-auto mb-2" style={{ color: '#FF8C00' }} />
-//                 <Typography variant="h4" sx={{ color: '#FF8C00', fontWeight: 700 }}>
-//                   {stats.successStreak}
-//                 </Typography>
-//                 <Typography variant="caption" sx={{ color: '#B0B0B0' }}>
-//                   Success Streak
-//                 </Typography>
-//               </Paper>
-
-//               <Paper
-//                 sx={{
-//                   bgcolor: '#121212',
-//                   p: 2,
-//                   textAlign: 'center',
-//                   border: '1px solid rgba(255, 68, 68, 0.3)',
-//                 }}
-//               >
-//                 <XCircle className="w-8 h-8 mx-auto mb-2" style={{ color: '#FF4444' }} />
-//                 <Typography variant="h4" sx={{ color: '#FF4444', fontWeight: 700 }}>
-//                   {stats.failedAttempts}
-//                 </Typography>
-//                 <Typography variant="caption" sx={{ color: '#B0B0B0' }}>
-//                   Failed Attempts
-//                 </Typography>
-//               </Paper>
-
-//               <Paper
-//                 sx={{
-//                   bgcolor: '#121212',
-//                   p: 2,
-//                   textAlign: 'center',
-//                   border: '1px solid rgba(57, 255, 20, 0.3)',
-//                 }}
-//               >
-//                 <CheckCircle2 className="w-8 h-8 mx-auto mb-2" style={{ color: '#39FF14' }} />
-//                 <Typography variant="h4" sx={{ color: '#39FF14', fontWeight: 700 }}>
-//                   {stats.totalCompleted}
-//                 </Typography>
-//                 <Typography variant="caption" sx={{ color: '#B0B0B0' }}>
-//                   Total Completed
-//                 </Typography>
-//               </Paper>
-//             </Box>
-//           </CardContent>
-//         </Card>
-
-//         {/* Bottom: Terminal Window */}
-//         <Card
-//           sx={{
-//             gridColumn: '1 / -1',
-//             bgcolor: '#000',
-//             border: '1px solid rgba(57, 255, 20, 0.3)',
-//             boxShadow: '0 0 40px rgba(57, 255, 20, 0.15)',
-//             display: 'flex',
-//             flexDirection: 'column',
-//           }}
-//         >
-//           {/* Terminal Header */}
-//           <Box
-//             sx={{
-//               bgcolor: '#1A1A1A',
-//               px: 2,
-//               py: 1,
-//               borderBottom: '1px solid rgba(57, 255, 20, 0.2)',
-//               display: 'flex',
-//               alignItems: 'center',
-//               justifyContent: 'space-between',
-//             }}
-//           >
-//             <Box className="flex items-center gap-2">
-//               <Box className="w-3 h-3 rounded-full bg-red-500" />
-//               <Box className="w-3 h-3 rounded-full bg-yellow-500" />
-//               <Box className="w-3 h-3 rounded-full" style={{ backgroundColor: '#39FF14' }} />
-//               <Typography
-//                 variant="caption"
-//                 sx={{ ml: 2, color: '#B0B0B0', fontFamily: 'monospace' }}
-//               >
-//                 terminal@cloud-sandbox
+//         {/* 🖥 PASTKI BUTUN PANEL: Terminal va Nano Muharriri oynasi */}
+//         <Card sx={{ gridColumn: '1 / -1', bgcolor: '#000', border: '1px solid rgba(57, 255, 20, 0.25)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+          
+//           {/* Terminal / Nano sarlavha qismi */}
+//           <Box sx={{ bgcolor: '#1A1A1A', px: 2, py: 0.8, display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(57, 255, 20, 0.15)' }}>
+//             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+//               <TerminalIcon size={14} style={{ color: '#39FF14' }} />
+//               <Typography variant="caption" sx={{ color: '#B0B0B0', fontFamily: 'monospace' }}>
+//                 {isNanoActive ? `GNU nano v5.0 — ${nanoFileName}` : `ilyos@cloud-sandbox: ${currentDirectory}`}
 //               </Typography>
 //             </Box>
-//             <IconButton size="small" onClick={clearTerminal}>
-//               <Trash2 className="w-4 h-4" style={{ color: '#666' }} />
-//             </IconButton>
+//             <IconButton size="small" onClick={() => setHistory([])} disabled={isNanoActive}><Trash2 size={14} style={{ color: '#666' }} /></IconButton>
 //           </Box>
 
-//           {/* Terminal Output */}
-//           <Box
-//             sx={{
-//               flex: 1,
-//               overflowY: 'auto',
-//               p: 2,
-//               fontFamily: '"JetBrains Mono", "Fira Code", monospace',
-//               fontSize: '0.9rem',
-//               color: '#39FF14',
-//               '&::-webkit-scrollbar': {
-//                 width: '8px',
-//               },
-//               '&::-webkit-scrollbar-track': {
-//                 bgcolor: '#0A0A0A',
-//               },
-//               '&::-webkit-scrollbar-thumb': {
-//                 bgcolor: '#39FF14',
-//                 borderRadius: '4px',
-//               },
-//             }}
-//           >
-//             <Typography sx={{ color: '#666', mb: 2 }}>
-//               Welcome to Cloud Terminal v1.0.0
-//               <br />
-//               Type 'help' for available commands
-//               <br />
-//               ════════════════════════════════════════
-//             </Typography>
-
-//             {history.map((item, index) => (
-//               <Box key={index} sx={{ mb: 2 }}>
-//                 <Typography sx={{ color: '#39FF14' }}>
-//                   user@sandbox:~$ {item.command}
-//                 </Typography>
-//                 <Typography sx={{ color: '#FFF', whiteSpace: 'pre-wrap', ml: 2 }}>
-//                   {item.output}
-//                 </Typography>
-//               </Box>
-//             ))}
-
-//             {loading && (
-//               <Typography sx={{ color: '#FFD700', animation: 'blink 1s infinite' }}>
-//                 Processing...
-//               </Typography>
+//           {/* 🔀 SHARTLI RENDER: Nano yoqilgan bo'lsa NanoEditor, aks holda Terminal Console ko'rinadi */}
+//           <Box onClick={focusInput} sx={{ flex: 1, overflowY: 'auto', p: 2, display: 'flex', flexDirection: 'column' }}>
+//             {isNanoActive ? (
+//               // 🔴 NANO EDITOR OYNASI: Eski ma'lumotlar bilan ochiladigan qism
+//               <NanoEditor fileName={nanoFileName} content={nanoContent} setContent={setNanoContent} textAreaRef={nanoTextAreaRef} />
+//             ) : (
+//               // 🟢 TERMINAL OYNASI: Buyruqlar kiritiladigan qism
+//               <TerminalConsole
+//                 history={history} currentDirectory={currentDirectory} command={command} setCommand={setCommand}
+//                 loading={loading} onSubmit={handleCommandSubmit} inputRef={inputRef} terminalEndRef={terminalEndRef}
+//                 availableSuggestions={userStructure || ['help', 'clear', 'check', 'ls', 'cd']}
+//               />
 //             )}
-
-//             <div ref={terminalEndRef} />
-//           </Box>
-
-//           {/* Terminal Input */}
-//           <Box sx={{ bgcolor: '#0A0A0A', p: 2, borderTop: '1px solid rgba(57, 255, 20, 0.2)' }}>
-//             <form onSubmit={handleSubmit}>
-//               <Box className="flex gap-2 items-center">
-//                 <Typography sx={{ color: '#39FF14', fontFamily: 'monospace', minWidth: 'auto' }}>
-//                   user@sandbox:~$
-//                 </Typography>
-//                 <TextField
-//                   fullWidth
-//                   variant="standard"
-//                   value={command}
-//                   onChange={(e) => setCommand(e.target.value)}
-//                   disabled={loading}
-//                   autoFocus
-//                   placeholder="Enter command..."
-//                   InputProps={{
-//                     disableUnderline: true,
-//                     style: {
-//                       fontFamily: '"JetBrains Mono", "Fira Code", monospace',
-//                       color: '#39FF14',
-//                       fontSize: '0.9rem',
-//                     },
-//                   }}
-//                   sx={{
-//                     '& input::placeholder': {
-//                       color: '#666',
-//                       opacity: 1,
-//                     },
-//                   }}
-//                 />
-//                 <IconButton
-//                   type="submit"
-//                   disabled={loading || !command.trim()}
-//                   sx={{
-//                     color: '#39FF14',
-//                     '&:disabled': { color: '#333' },
-//                   }}
-//                 >
-//                   <Send className="w-5 h-5" />
-//                 </IconButton>
-//               </Box>
-//             </form>
 //           </Box>
 //         </Card>
 //       </Box>
 
-//       {/* Edit Profile Dialog */}
-//       <Dialog
-//         open={editProfileOpen}
-//         onClose={() => setEditProfileOpen(false)}
-//         PaperProps={{
-//           sx: {
-//             bgcolor: '#1E1E1E',
-//             border: '1px solid rgba(57, 255, 20, 0.2)',
-//           },
-//         }}
-//       >
-//         <DialogTitle sx={{ color: '#39FF14' }}>Edit Profile</DialogTitle>
-//         <DialogContent>
-//           <TextField
-//             fullWidth
-//             label="First Name"
-//             defaultValue={user?.first_name}
-//             sx={{ mt: 2, mb: 2 }}
-//           />
-//           <TextField
-//             fullWidth
-//             label="Last Name"
-//             defaultValue={user?.last_name}
-//             sx={{ mb: 2 }}
-//           />
-//           <TextField
-//             fullWidth
-//             label="Email"
-//             defaultValue={user?.email}
-//             sx={{ mb: 2 }}
-//           />
-//         </DialogContent>
-//         <DialogActions>
-//           <Button onClick={() => setEditProfileOpen(false)} sx={{ color: '#666' }}>
-//             Cancel
-//           </Button>
-//           <Button
-//             variant="contained"
-//             sx={{ bgcolor: '#39FF14', color: '#121212' }}
-//           >
-//             Save
-//           </Button>
-//         </DialogActions>
-//       </Dialog>
-
-//       {/* Snackbars */}
-//       <Snackbar open={success} autoHideDuration={3000} onClose={() => setSuccess(false)}>
-//         <Alert severity="success" sx={{ bgcolor: '#1E1E1E', color: '#39FF14' }}>
-//           Task created successfully!
-//         </Alert>
+//       {/* ==========================================
+//       // 🔔 BILDIRISHNOMALAR (Success & Error Snackbars)
+//       // ========================================== */}
+//       <Snackbar open={success} autoHideDuration={4000} onClose={() => setSuccess(false)}>
+//         <Alert severity="success" sx={{ bgcolor: '#121212', color: '#39FF14', border: '1px solid #39FF14' }}>{successMessage}</Alert>
 //       </Snackbar>
-
-//       <Snackbar open={!!error} autoHideDuration={3000} onClose={() => setError('')}>
-//         <Alert severity="error" onClose={() => setError('')}>
-//           {error}
-//         </Alert>
+//       <Snackbar open={!!error} autoHideDuration={4000} onClose={() => setError('')}>
+//         <Alert severity="error" sx={{ bgcolor: '#121212', color: '#FF4444', border: '1px solid #FF4444' }}>{error}</Alert>
 //       </Snackbar>
 //     </Box>
 //   );
@@ -572,171 +843,144 @@
 
 
 
-//      ------------gemini----------------
+
+
 import React, { useState, useRef, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { Box, Card, CardContent, IconButton, Typography, Snackbar, Alert } from '@mui/material';
+import { Trash2, Terminal as TerminalIcon, Folder } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Box,
-  Paper,
-  TextField,
-  Button,
-  Typography,
-  Avatar,
-  Menu,
-  MenuItem,
-  IconButton,
-  LinearProgress,
-  Card,
-  CardContent,
-  Snackbar,
-  Alert,
-  Chip,
-} from '@mui/material';
-import {
-  Send,
-  Trash2,
-  LogOut,
-  User,
-  Flame,
-  XCircle,
-  CheckCircle2,
-  Play,
-  ChevronDown,
-  Terminal as TerminalIcon,
-  FolderTree,
-  Award,
-} from 'lucide-react';
+
+// ==========================================
+// 🟢 IMPORT QISMI (Komponentlar va API sozlamalari)
+// ==========================================
 import api from '../config/api';
-
-// 🟢 config ichidagi utils faylidan aqlli Tab funksiyasini import qilamiz
-import { getSuggestionsFromStructure } from '../config/utils';
-
-interface CommandHistory {
-  command: string;
-  output: string;
-  timestamp: Date;
-}
-
-interface UserStats {
-  level: number;
-  xp: number;
-  maxXp: number;
-  successStreak: number;
-  failedAttempts: number;
-  totalCompleted: number;
-}
-
-interface ActiveTask {
-  task_id: number;
-  title: string;
-  description: string;
-  level: number;
-  xp: number;
-  status: string;
-  structure: Record<string, any>; // Backenddan keladigan Nested JSON iyerarxiyasi
-  formatted_structure: string;
-}
+import { useAuth } from '../context/AuthContext';
+import { UserProfileHeader } from '../components/UserProfileHeader';
+import { TaskPanel } from '../components/TaskPanel';
+import { NanoEditor } from '../components/NanoEditor';
+import { TerminalConsole } from '../components/TerminalConsole';
+import FileListVisualizer from '../components/FileListVisualizer'; 
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  // Terminal holatlari
+  // ==========================================
+  // 🟢 STATE-LAR (Holatlar boshqaruvi)
+  // ==========================================
   const [command, setCommand] = useState('');
-  const [history, setHistory] = useState<CommandHistory[]>([]);
+  const [history, setHistory] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [currentDirectory, setCurrentDirectory] = useState('~'); 
-
-  // Profil menyusi va bildirishnomalar holati
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  
+  // 🖥 Nano muharriri uchun kerakli statelar
+  const [isNanoActive, setIsNanoActive] = useState(false); // Nano rejimi yoqilgan/o'chirilganligi
+  const [nanoFileName, setNanoFileName] = useState('');     // Ochilgan fayl nomi
+  const [nanoContent, setNanoContent] = useState('');       // Fayl ichidagi matn (Kontent)
+  
+  // 📋 Topshiriq va foydalanuvchi ma'lumotlari statelari
+  const [activeTask, setActiveTask] = useState<any>(null);
+  const [userStructure, setUserStructure] = useState<any>(null);
+  const [profile, setProfile] = useState<any>(null);
+  
+  // 🔔 Bildirishnomalar statelari (Toast Notification)
   const [success, setSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [error, setError] = useState('');
 
-  // Refs
+  // ==========================================
+  // 🟢 REF-LAR (Fokus va Avto-scroll boshqaruvi)
+  // ==========================================
   const terminalEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const nanoTextAreaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Faol topshiriq va statistika holati
-  const [activeTask, setActiveTask] = useState<ActiveTask | null>(null);
-  const [profileStats, setProfileStats] = useState<UserStats>({
-    level: 1,
-    xp: 0,
-    maxXp: 100,
-    successStreak: 0,
-    failedAttempts: 0,
-    totalCompleted: 0,
-  });
+  // 🎯 Fokusni boshqarish: Nano yoniqligiga qarab kerakli oynaga fokus beradi
+  const focusInput = () => {
+    if (!isNanoActive && inputRef.current) inputRef.current.focus();
+    else if (isNanoActive && nanoTextAreaRef.current) nanoTextAreaRef.current.focus();
+  };
 
-  // Terminal har safar yangilanganda pastga avtomatik skrol qilish
+  // ==========================================
+  // 🟢 EFFEKTLAR (Side Effects)
+  // ==========================================
+  
+  // 👤 Profil ma'lumotlarini backenddan yuklab olish qismi
+  const fetchUserProfile = async () => {
+    try {
+      const res = await api.get('/api/profile/');
+      if (Array.isArray(res.data) && res.data.length > 0) setProfile(res.data[0]);
+    } catch (err) {
+      console.error("Profil ma'lumotlarini yuklashda xatolik.");
+    }
+  };
+
+  useEffect(() => { fetchUserProfile(); }, []);
+  useEffect(() => { focusInput(); }, [isNanoActive, history]);
+
+  // ==========================================
+  // ⌨️ GNU NANO HOTKEY (Klaviatura tugmalari boshqaruvi)
+  // ==========================================
   useEffect(() => {
-    terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [history]);
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if (isNanoActive) {
+        // 💾 Ctrl + O -> Faylni saqlash jarayoni
+        if (e.ctrlKey && e.key.toLowerCase() === 'o') {
+          e.preventDefault();
+          handleNanoSave();
+        }
+        // ❌ Ctrl + X -> Nano muharriridan chiqish jarayoni
+        if (e.ctrlKey && e.key.toLowerCase() === 'x') {
+          e.preventDefault();
+          setIsNanoActive(false); // Nano rejimini o'chirish
+          
+          setHistory(prev => [...prev, { 
+            command: `nano ${nanoFileName}`, 
+            output: 'GNU nano muharriridan chiqildi.', 
+            timestamp: new Date() 
+          }]);
 
-  // Profil menyusini ochish/yopish
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
-  const handleCloseMenu = () => setAnchorEl(null);
-  const handleLogout = () => {
-    logout();
-    navigate('/auth');
-  };
-
-  // 🖥️ TAB TUGMASI BOSILGANDA AVTO-TO'LDIRISH (INTELLISENSE)
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Tab') {
-      e.preventDefault(); // Brauzer fokusni boshqa elementga o'tkazib yubormasligi uchun
-
-      const inputVal = command.trim();
-      if (!inputVal) return;
-
-      const words = inputVal.split(' ');
-      const lastWord = words[words.length - 1].toLowerCase();
-
-      // Standart Linux va tizim buyruqlari
-      const baseCommands = ['start', 'check', 'status', 'ls', 'cd', 'clear', 'mkdir', 'touch'];
-      
-      // Utils faylidan kelgan funksiya orqali joriy papkaga tegishli dinamik fayl/papkalar ro'yxati
-      const dynamicFiles = activeTask ? getSuggestionsFromStructure(activeTask.structure, currentDirectory) : [];
-      
-      // 'start ' yozilganda joriy task ID sini ham variant qilib qo'shamiz
-      if (words[0] === 'start' && activeTask) {
-        dynamicFiles.push(String(activeTask.task_id));
+          // Statelarni tozalash (Keyingi fayl toza ochilishi uchun)
+          setNanoContent(''); 
+          setNanoFileName('');
+        }
       }
+    };
+    window.addEventListener('keydown', handleGlobalKeyDown, true);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown, true);
+  }, [isNanoActive, nanoFileName, nanoContent]);
 
-      const allSuggestions = [...baseCommands, ...dynamicFiles];
-      const matches = allSuggestions.filter(item => item.toLowerCase().startsWith(lastWord));
-
-      if (matches.length === 1) {
-        // Bittagina moslik topilsa, oxirgi so'zni to'liq almashtiramiz
-        words[words.length - 1] = matches[0];
-        setCommand(words.join(' ') + (baseCommands.includes(matches[0]) ? ' ' : ''));
-      } else if (matches.length > 1) {
-        // Bir nechta variant bo'lsa, ularni konsol tarixiga chiqaramiz
-        setHistory((prev) => [
-          ...prev,
-          {
-            command: inputVal,
-            output: `Variantlar: ${matches.join(', ')}`,
-            timestamp: new Date()
-          }
-        ]);
+  // ==========================================
+  // 💾 NANO SAQLASH FUNKSIYASI (Ctrl + O bosilganda)
+  // ==========================================
+  const handleNanoSave = async () => {
+    if (!nanoFileName || loading) return;
+    setLoading(true);
+    try {
+      // 🔥 BACKEND TALAB QILGAN FORMAT: type, path va content kalitlari yuboriladi
+      const res = await api.post('/terminal/', { 
+        type: "nano_save",
+        path: nanoFileName,
+        content: nanoContent 
+      });
+      
+      if (res.data) {
+        setSuccessMessage('Fayl muvaffaqiyatli saqlandi! 💾');
+        setSuccess(true);
+        // Saqlangandan keyin fayl tizimi yangilansa, strukturani o'zgartiramiz
+        if (res.data.structure) setUserStructure(res.data.structure);
       }
+    } catch (err) { 
+      console.error("Saqlashda xato:", err);
+      setError('Faylni saqlashda ichki xatolik yuz berdi.'); 
+    } finally { 
+      setLoading(false); 
     }
   };
 
-  // Backend javoblarini (Celery outputlarini) terminal uchun formatlash
-  const formatOutput = (data: any): string => {
-    if (!data) return 'Command executed.';
-    if (typeof data === 'string') return data;
-    if (typeof data === 'object') {
-      if (data.result && data.result.output) return data.result.output;
-      return data.output || data.message || JSON.stringify(data, null, 2);
-    }
-    return String(data);
-  };
-
-  // 🚀 TERMINAL BUYRUQLARINI BACKENDGA YUBORISH
+  // ==========================================
+  // 🚀 TERMINAL BUYRUQLARINI SUBMIT QILISH
+  // ==========================================
   const handleCommandSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!command.trim() || loading) return;
@@ -745,521 +989,207 @@ export default function Dashboard() {
     setCommand('');
     setLoading(true);
 
-    // Terminalni tozalash ichki buyrug'i
+    // 🧹 Clear buyrug'i terminal tarixini tozalaydi
     if (currentCommand.toLowerCase() === 'clear') {
       setHistory([]);
       setLoading(false);
       return;
     }
 
+    // 📂 NANO BUYRUG'I TERMINALDA ISHGA TUSHGANDA (Fayl ochish)
+    if (currentCommand.startsWith('nano ')) {
+      const fileName = currentCommand.split(/\s+/)[1] || 'unnamed.txt';
+      setNanoFileName(fileName);
+      
+      try {
+        const res = await api.post('/terminal/', { 
+          type: "regular_command", // backend logikasiga mos ravishda buyruq turi
+          command: currentCommand 
+        });
+        const responseData = res.data;
+
+        // 🔥 BACKEND JAVOBIGA MOSLASH: result.content ichidagi matnni xavfsiz qidiramiz
+        let existingContent = '';
+        if (responseData.result && responseData.result.content !== undefined) {
+          existingContent = responseData.result.content;
+        } else if (responseData.content !== undefined) {
+          existingContent = responseData.content;
+        }
+        
+        setNanoContent(existingContent); // 👈 Eski ma'lumotlar saqlangan holda yuklanadi!
+        setIsNanoActive(true);      // Nano oynasini vizual ochish
+
+        // Yo'llar va joriy strukturani yangilash
+        if (responseData.current_path) setCurrentDirectory(responseData.current_path);
+        if (responseData.structure) setUserStructure(responseData.structure);
+
+      } catch (err) {
+        console.error("Faylni yuklashda xato:", err);
+        setHistory((prev) => [...prev, { command: currentCommand, output: "Faylni ochib bo'lmadi.", timestamp: new Date() }]);
+      } finally { 
+        setLoading(false); 
+      }
+      return;
+    }
+
+    // ⚙️ ODDIY BUYRUQLAR IJROSI (ls, cd, mkdir, touch, rm va hkz)
     try {
-      const res = await api.post('/terminal/', { command: currentCommand });
+      const res = await api.post('/terminal/', { 
+        type: "regular_command",
+        command: currentCommand 
+      });
       const responseData = res.data;
 
-      // 1. Prompt yo'lagini backend qaytargan real path bilan yangilaymiz
-      if (responseData.current_path) {
-        setCurrentDirectory(responseData.current_path);
-      }
+      if (responseData.current_path) setCurrentDirectory(responseData.current_path);
+      if (responseData.structure) setUserStructure(responseData.structure);
 
-      // 2. Agar 'check' buyrug'i muvaffaqiyatli bo'lsa, profilingizni yangilaymiz
-      if (currentCommand.toLowerCase() === 'check' && responseData.result?.status?.includes('correct')) {
-        setSuccessMessage('Topshiriq muvaffaqiyatli yakunlandi! 🌲');
+      // Topshiriq tekshiruvi muvaffaqiyatli bo'lsa
+      if (currentCommand.toLowerCase() === 'check' && (responseData.result?.status?.includes('correct') || responseData.status?.includes('correct'))) {
+        setSuccessMessage('Topshiriq muvaffaqiyatli bajarildi! 🎉');
         setSuccess(true);
-        setActiveTask(null); // Panelni tozalash
-        setCurrentDirectory('~'); // Asosiy directoryga qaytarish
-
-        // Agar backend yangi daraja va XP qaytargan bo'lsa, statni yangilaymiz
-        if (responseData.xp && responseData.level) {
-          setProfileStats(prev => ({
-            ...prev,
-            xp: responseData.xp,
-            level: responseData.level,
-            totalCompleted: prev.totalCompleted + 1,
-            successStreak: prev.successStreak + 1
-          }));
-        }
+        setActiveTask(null);
+        setUserStructure(null);
+        fetchUserProfile();
       }
 
-      setHistory((prev) => [
-        ...prev,
-        {
-          command: currentCommand,
-          output: formatOutput(responseData),
-          timestamp: new Date(),
-        },
-      ]);
-
+      const outputText = responseData.output || responseData.result?.output || 'Buyruq bajarildi.';
+      setHistory((prev) => [...prev, { command: currentCommand, output: outputText, timestamp: new Date() }]);
     } catch (err: any) {
-      setHistory((prev) => [
-        ...prev,
-        {
-          command: currentCommand,
-          output: formatOutput(err.response?.data || 'Buyruqni bajarishda xatolik yuz berdi.'),
-          timestamp: new Date(),
-        },
-      ]);
-    } finally {
-      setLoading(false);
+      console.error("Buyruq xatosi:", err);
+      const errText = err.response?.data?.detail || err.response?.data?.output || 'Xatolik: Buyruq ijrosida muammo.';
+      setHistory((prev) => [...prev, { command: currentCommand, output: errText, timestamp: new Date() }]);
+    } finally { 
+      setLoading(false); 
     }
   };
 
-  // 📡 TUGMA ORQALI YANGI TOPSHIRIQNI GENERATSIYA QILISH (GET /task/)
+  // ==========================================
+  // 📋 YANGI TOPSHIRIQ OLISH
+  // ==========================================
   const handleGetTask = async () => {
     setLoading(true);
     try {
       const res = await api.get('/task/');
       if (res.data) {
-        setActiveTask({
-          task_id: res.data.task_id,
-          title: res.data.title,
-          description: res.data.description,
-          level: res.data.level,
-          xp: res.data.xp,
-          status: res.data.status,
-          structure: res.data.structure, // Nested JSON obyekt saqlandi
-          formatted_structure: res.data.formatted_structure,
-        });
-
-        setHistory((prev) => [
-          ...prev,
-          {
-            command: `system --load-task id=${res.data.task_id}`,
-            output: `📡 YANGI TOPSHIRIQ YUKLANDI:\n🆔 ID: ${res.data.task_id}\n🎯 Nomi: ${res.data.title}\n\n⚙️ Boshlash uchun terminalga yozing:\n👉 start ${res.data.task_id}`,
-            timestamp: new Date(),
-          },
-        ]);
-        setSuccessMessage('Yangi topshiriq olindi! Uni terminalda boshlang.');
-        setSuccess(true);
+        setActiveTask(res.data);
+        setUserStructure([]); 
       }
     } catch (err) {
-      setError("Topshiriqni yuklashda xatolik yuz berdi yoki faol topshiriq mavjud.");
+      setError("Yangi topshiriqni yuklab bo'lmadi.");
     } finally {
       setLoading(false);
     }
   };
 
-  const clearTerminal = () => setHistory([]);
-  const getInitials = () => (user?.first_name && user?.last_name) ? `${user.first_name[0]}${user.last_name[0]}`.toUpperCase() : (user?.username?.[0]?.toUpperCase() || 'U');
+  const handleLogout = () => { logout(); navigate('/auth'); };
 
+  // ==========================================
+  // 🎨 VIZUAL INTERFEYS (UI Render)
+  // ==========================================
   return (
-    <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column', bgcolor: '#0A0A0A' }}>
-      {/* Top Navbar */}
-      <Paper elevation={0} sx={{ bgcolor: '#121212', borderBottom: '1px solid rgba(57, 255, 20, 0.2)', px: 3, py: 2 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <IconButton onClick={handleMenu} sx={{ p: 0 }}>
-              <Avatar sx={{ bgcolor: '#39FF14', color: '#121212', width: 48, height: 48, fontWeight: 700, border: '2px solid #39FF14', boxShadow: '0 0 20px rgba(57, 255, 20, 0.3)' }}>
-                {getInitials()}
-              </Avatar>
-            </IconButton>
-            <Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <Typography sx={{ color: '#FFF', fontWeight: 700, fontSize: '1.1rem' }}>{user?.username || 'User'}</Typography>
-                <Chip label={`Level ${profileStats.level}`} size="small" sx={{ bgcolor: 'rgba(57, 255, 20, 0.15)', color: '#39FF14', border: '1px solid #39FF14', fontWeight: 700 }} />
-              </Box>
-              <Box sx={{ width: 200, mt: 0.5 }}>
-                <LinearProgress variant="determinate" value={(profileStats.xp / profileStats.maxXp) * 100} sx={{ height: 6, borderRadius: 3, bgcolor: '#2A2A2A', '& .MuiLinearProgress-bar': { bgcolor: '#39FF14' } }} />
-              </Box>
-            </Box>
-          </Box>
-          
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography sx={{ color: '#B0B0B0', mr: 1, variant: 'body2', fontFamily: 'monospace' }}>Sozlamalar</Typography>
-            <IconButton onClick={handleMenu} sx={{ color: '#39FF14' }}><ChevronDown className="w-5 h-5" /></IconButton>
-            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu} PaperProps={{ sx: { bgcolor: '#121212', border: '1px solid rgba(57, 255, 20, 0.2)', color: '#FFF' } }}>
-              <MenuItem onClick={handleCloseMenu} sx={{ gap: 1 }}><User className="w-4 h-4" /> Profil</MenuItem>
-              <MenuItem onClick={handleLogout} sx={{ gap: 1, color: '#FF4444' }}><LogOut className="w-4 h-4" /> Chiqish</MenuItem>
-            </Menu>
-          </Box>
-        </Box>
-      </Paper>
+    <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column', bgcolor: '#0A0A0A', overflow: 'hidden' }}>
+      
+      {/* 🔝 FOYDALANUVCHI PROFILI BAR (HEADER) */}
+      <UserProfileHeader 
+        username={user?.username} 
+        profile={profile} 
+        onLogout={handleLogout} 
+      />
 
-      {/* Main Content Grid Area */}
-      <Box sx={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: 2, p: 2, overflow: 'hidden' }}>
+      {/* 📊 ASOSI_ISHCHI PANELI */}
+      <Box sx={{ 
+        flex: 1, 
+        display: 'grid', 
+        gridTemplateColumns: '1fr 1fr', 
+        gridTemplateRows: '42% 58%', 
+        gap: 2, 
+        p: 2, 
+        overflow: 'hidden',
+        height: 'calc(100vh - 65px)' 
+      }}>
         
-        {/* TOP-LEFT PANEL: ACTIVE TASK DETAIL */}
-        <Card sx={{ bgcolor: '#1E1E1E', border: '1px solid rgba(57, 255, 20, 0.2)', boxShadow: '0 0 30px rgba(57, 255, 20, 0.1)', overflowY: 'auto' }}>
-          <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-            {activeTask ? (
-              <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', gap: 1.5 }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Typography variant="h6" sx={{ color: '#39FF14', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <TerminalIcon className="w-5 h-5" /> Topshiriq #{activeTask.task_id}
-                  </Typography>
-                  <Chip label={`Level ${activeTask.level}`} size="small" sx={{ bgcolor: 'rgba(255, 215, 0, 0.15)', color: '#FFD700', border: '1px solid #FFD700', fontWeight: 600 }} />
-                </Box>
+        {/* 📦 CHAP TEPADA: JORIY TOPSHIRIQ PANELI */}
+        <TaskPanel 
+          activeTask={activeTask} 
+          onGetTask={handleGetTask} 
+        />
 
-                <Typography variant="subtitle1" sx={{ color: '#FFF', fontWeight: 600, fontFamily: 'monospace' }}>{activeTask.title}</Typography>
-                <Typography variant="body2" sx={{ color: '#B0B0B0', bgcolor: '#121212', p: 1.5, borderRadius: 1, borderLeft: '3px solid #39FF14', fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}>{activeTask.description}</Typography>
-
-                <Box sx={{ mt: 1 }}>
-                  <Typography variant="caption" sx={{ color: '#666', display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
-                    <FolderTree className="w-4 h-4" /> Kutilayotgan iyerarxiya strukturasi:
-                  </Typography>
-                  <Typography sx={{ fontFamily: 'monospace', color: '#FFD700', pl: 1, fontSize: '0.85rem', whiteSpace: 'pre-wrap', bgcolor: '#0A0A0A', p: 1.5, borderRadius: 1, border: '1px dashed rgba(255, 215, 0, 0.2)' }}>
-                    {activeTask.formatted_structure}
-                  </Typography>
-                </Box>
-
-                <Box sx={{ display: 'flex', gap: 2, mt: 'auto', alignItems: 'center', pt: 2 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: '#39FF14' }}>
-                    <Award className="w-4 h-4" />
-                    <Typography variant="caption" sx={{ fontWeight: 700 }}>+{activeTask.xp} XP mukofot</Typography>
-                  </Box>
-                  <Typography variant="caption" sx={{ color: '#888', ml: 'auto', fontFamily: 'monospace' }}>
-                    Terminalda 'start {activeTask.task_id}' buyrug'ini bering.
-                  </Typography>
-                </Box>
-              </Box>
-            ) : (
-              <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%', gap: 2 }}>
-                <Typography variant="h6" sx={{ color: '#666', fontFamily: 'monospace', textAlign: 'center' }}>Sizda faol topshiriq mavjud emas.<br />Tugmani bosib yangi loyihani yuklang.</Typography>
-                <Button variant="contained" endIcon={<Play className="w-4 h-4" />} onClick={handleGetTask} disabled={loading} sx={{ bgcolor: '#39FF14', color: '#121212', fontWeight: 700, px: 4, py: 1.5, '&:hover': { bgcolor: '#2ECC11' }, boxShadow: '0 0 15px rgba(57, 255, 20, 0.4)' }}>
-                  {loading ? 'Yuklanmoqda...' : 'Yangi Task Run Qilish'}
-                </Button>
-              </Box>
-            )}
+        {/* 📦 O'NG TEPADA: VIZUAL FAYLLAR IERARXIYASI */}
+        <Card sx={{ bgcolor: '#121212', border: '1px solid rgba(57, 255, 20, 0.15)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+          <Box sx={{ bgcolor: '#1A1A1A', px: 2, py: 1, borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Folder size={14} style={{ color: '#FFD700' }} />
+            <Typography variant="subtitle2" sx={{ color: '#FFD700', fontWeight: 600, fontSize: '0.85rem' }}>Sandbox Fayllar Tizimi</Typography>
+          </Box>
+          <CardContent sx={{ flex: 1, overflowY: 'auto', p: 2, bgcolor: '#0F0F0F' }}>
+            <FileListVisualizer structure={userStructure} />
           </CardContent>
         </Card>
 
-        {/* TOP-RIGHT PANEL: STATISTICS */}
-        <Card sx={{ bgcolor: '#1E1E1E', border: '1px solid rgba(57, 255, 20, 0.2)' }}>
-          <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <Typography variant="h6" sx={{ color: '#39FF14', mb: 3, fontWeight: 700 }}>Foydalanuvchi Ko'rsatkichlari</Typography>
-            <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 2, flex: 1, alignItems: 'center' }}>
-              <Paper sx={{ bgcolor: '#121212', p: 3, textAlign: 'center', border: '1px solid rgba(255, 140, 0, 0.3)', boxShadow: '0 0 15px rgba(255, 140, 0, 0.05)' }}><Flame className="w-8 h-8 mx-auto mb-2" style={{ color: '#FF8000' }} /><Typography variant="h4" sx={{ color: '#FF8000', fontWeight: 700 }}>{profileStats.successStreak}</Typography><Typography variant="caption" sx={{ color: '#B0B0B0' }}>Aktiv Streak</Typography></Paper>
-              <Paper sx={{ bgcolor: '#121212', p: 3, textAlign: 'center', border: '1px solid rgba(255, 68, 68, 0.3)', boxShadow: '0 0 15px rgba(255, 68, 68, 0.05)' }}><XCircle className="w-8 h-8 mx-auto mb-2" style={{ color: '#FF4444' }} /><Typography variant="h4" sx={{ color: '#FF4444', fontWeight: 700 }}>{profileStats.failedAttempts}</Typography><Typography variant="caption" sx={{ color: '#B0B0B0' }}>Xatolar</Typography></Paper>
-              <Paper sx={{ bgcolor: '#121212', p: 3, textAlign: 'center', border: '1px solid rgba(57, 255, 20, 0.3)', boxShadow: '0 0 15px rgba(57, 255, 20, 0.05)' }}><CheckCircle2 className="w-8 h-8 mx-auto mb-2" style={{ color: '#39FF14' }} /><Typography variant="h4" sx={{ color: '#39FF14', fontWeight: 700 }}>{profileStats.totalCompleted}</Typography><Typography variant="caption" sx={{ color: '#B0B0B0' }}>Bajarildi</Typography></Paper>
-            </Box>
-          </CardContent>
-        </Card>
-
-        {/* BOTTOM PANEL: FULL TERMINAL WINDOW */}
-        <Card sx={{ gridColumn: '1 / -1', bgcolor: '#000', border: '1px solid rgba(57, 255, 20, 0.3)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-          {/* Terminal header */}
-          <Box sx={{ bgcolor: '#1A1A1A', px: 2, py: 1, borderBottom: '1px solid rgba(57, 255, 20, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        {/* 📟 PASTI: TERMINAL VA NANO EDITOR OYNASI */}
+        <Card sx={{ 
+          gridColumn: '1 / -1', 
+          bgcolor: '#000', 
+          border: '1px solid rgba(57, 255, 20, 0.25)', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          overflow: 'hidden' 
+        }}>
+          {/* Terminal / Nano Sarlavhasi */}
+          <Box sx={{ bgcolor: '#1A1A1A', px: 2, py: 0.8, borderBottom: '1px solid rgba(57, 255, 20, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: '#ef4444' }} />
-              <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: '#eab308' }} />
-              <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: '#39FF14' }} />
-              <Typography variant="caption" sx={{ ml: 2, color: '#B0B0B0', fontFamily: 'monospace' }}>sandbox-terminal@linux-engine</Typography>
+              <TerminalIcon size={14} style={{ color: '#39FF14' }} />
+              <Typography variant="caption" sx={{ color: '#B0B0B0', fontFamily: 'monospace', letterSpacing: 0.5 }}>
+                {isNanoActive ? `GNU nano v5.0 — ${nanoFileName}` : `user@cloud-sandbox: ${currentDirectory}`}
+              </Typography>
             </Box>
-            <IconButton size="small" onClick={clearTerminal} title="Terminalni tozalash"><Trash2 className="w-4 h-4" style={{ color: '#666' }} /></IconButton>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <IconButton size="small" onClick={() => setHistory([])} disabled={isNanoActive} title="Ekranni tozalash">
+                <Trash2 size={14} style={{ color: isNanoActive ? '#333' : '#666' }} />
+              </IconButton>
+            </Box>
           </Box>
 
-          {/* Terminal output stream */}
-          <Box sx={{ flex: 1, overflowY: 'auto', p: 2, fontFamily: '"JetBrains Mono", monospace', fontSize: '0.88rem', color: '#39FF14', bgcolor: '#000' }}>
-            <Typography sx={{ color: '#666', mb: 2, lineHeight: 1.5 }}>Welcome to Cloud Sandbox v1.2.5 (Celery Engine Active)<br />Tip: Papka va fayl nomlarini tezkor yozish uchun istalgan payt [Tab] bosing.<br />══════════════════════════════════════════════════════════</Typography>
-            {history.map((item, index) => (
-              <Box key={index} sx={{ mb: 1.5 }}>
-                <Typography sx={{ color: '#39FF14', fontWeight: 600 }}>user@sandbox:{currentDirectory}$ {item.command}</Typography>
-                <Typography sx={{ color: '#FFF', whiteSpace: 'pre-wrap', ml: 2, mt: 0.5, fontFamily: '"JetBrains Mono", monospace' }}>{item.output}</Typography>
-              </Box>
-            ))}
-            <div ref={terminalEndRef} />
+          {/* Dinamik Oyna Almashinuvi (Terminal yoki Nano) */}
+          <Box onClick={focusInput} sx={{ flex: 1, overflowY: 'auto', p: 2, display: 'flex', flexDirection: 'column', position: 'relative' }}>
+            {isNanoActive ? (
+  /* 📝 NANO EDITOR INTEGRATSIYASI */
+  <NanoEditor 
+    fileName={nanoFileName}
+    content={nanoContent}
+    setContent={setNanoContent}
+    textAreaRef={nanoTextAreaRef as any}
+  />
+) : (
+  /* 🟢 KLASSIK TERMINAL OYNASI */
+  <TerminalConsole 
+    history={history} 
+    loading={loading} 
+    currentDirectory={currentDirectory} 
+    command={command}
+    setCommand={setCommand}
+    inputRef={inputRef} // 👈 To'g'rilandi: 'nanoTextAreaRef as any' o'rniga haqiqiy inputRef berildi!
+    onSubmit={handleCommandSubmit}
+    terminalEndRef={terminalEndRef}
+  />
+)}
           </Box>
 
-          {/* Terminal interactive prompt input */}
-          <Box sx={{ bgcolor: '#0A0A0A', p: 2, borderTop: '1px solid rgba(57, 255, 20, 0.2)' }}>
-            <form onSubmit={handleCommandSubmit}>
-              <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
-                <Typography sx={{ color: '#39FF14', fontFamily: '"JetBrains Mono", monospace', fontWeight: 600, whiteSpace: 'nowrap' }}>
-                  user@sandbox:{currentDirectory}$
-                </Typography>
-                <TextField 
-                  fullWidth 
-                  variant="standard" 
-                  value={command} 
-                  inputRef={inputRef}
-                  onChange={(e) => setCommand(e.target.value)} 
-                  onKeyDown={handleKeyDown} 
-                  disabled={loading} 
-                  placeholder="Buyruqlarni kiriting (masalan: start 36, cd project, mkdir, touch)..." 
-                  InputProps={{ disableUnderline: true, style: { fontFamily: '"JetBrains Mono", monospace', color: '#39FF14', fontSize: '0.88rem' } }} 
-                  autoComplete="off"
-                />
-                <IconButton type="submit" disabled={loading || !command.trim()} sx={{ color: '#39FF14' }}><Send className="w-5 h-5" /></IconButton>
-              </Box>
-            </form>
-          </Box>
+          
         </Card>
       </Box>
 
-      {/* Global bildirishnomalar (Toast/Snackbar) */}
-      <Snackbar open={success} autoHideDuration={4000} onClose={() => setSuccess(false)} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-        <Alert severity="success" sx={{ bgcolor: '#121212', color: '#39FF14', border: '1px solid #39FF14', fontWeight: 600 }}>{successMessage}</Alert>
+      {/* 🔔 STATUS NOTIFICATION (TOAST) TIZIMI */}
+      <Snackbar open={success} autoHideDuration={4000} onClose={() => setSuccess(false)}>
+        <Alert severity="success" sx={{ bgcolor: '#121212', color: '#39FF14', border: '1px solid #39FF14' }}>
+          {successMessage}
+        </Alert>
       </Snackbar>
-      <Snackbar open={!!error} autoHideDuration={4000} onClose={() => setError('')} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-        <Alert severity="error" sx={{ bgcolor: '#121212', color: '#FF4444', border: '1px solid #FF4444' }}>{error}</Alert>
+
+      <Snackbar open={!!error} autoHideDuration={4000} onClose={() => setError('')}>
+        <Alert severity="error" sx={{ bgcolor: '#121212', color: '#FF4444', border: '1px solid #FF4444' }}>
+          {error}
+        </Alert>
       </Snackbar>
     </Box>
   );
 }
-//             --------------  chatJTP----------
-
-// import React, { useState, useRef, useEffect } from 'react';
-// import { useAuth } from '../context/AuthContext';
-// import {
-//   Box,
-//   Paper,
-//   TextField,
-//   Typography,
-//   Avatar,
-//   Menu,
-//   MenuItem,
-//   IconButton,
-//   LinearProgress,
-//   Card,
-//   CardContent,
-//   Divider,
-//   Dialog,
-//   DialogTitle,
-//   DialogContent,
-//   DialogActions,
-//   Snackbar,
-//   Alert,
-//   Chip,
-//   Button,
-// } from '@mui/material';
-
-// import {
-//   Send,
-//   Trash2,
-//   LogOut,
-//   User,
-//   Flame,
-//   XCircle,
-//   CheckCircle2,
-//   Play,
-//   ChevronDown,
-// } from 'lucide-react';
-
-// import { useNavigate } from 'react-router-dom';
-// import api from '../config/api';
-
-// interface CommandHistory {
-//   command: string;
-//   output: string;
-// }
-
-// interface UserStats {
-//   level: number;
-//   xp: number;
-//   maxXp: number;
-//   successStreak: number;
-//   failedAttempts: number;
-//   totalCompleted: number;
-// }
-
-// export default function Dashboard() {
-//   const { user, logout } = useAuth();
-//   const navigate = useNavigate();
-
-//   const [command, setCommand] = useState('');
-//   const [history, setHistory] = useState<CommandHistory[]>([]);
-//   const [loading, setLoading] = useState(false);
-
-//   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-//   const [editProfileOpen, setEditProfileOpen] = useState(false);
-
-//   const [taskTitle, setTaskTitle] = useState('');
-//   const [taskDescription, setTaskDescription] = useState('');
-
-//   const [success, setSuccess] = useState(false);
-//   const [error, setError] = useState('');
-
-//   const terminalEndRef = useRef<HTMLDivElement>(null);
-
-//   const [stats] = useState<UserStats>({
-//     level: 5,
-//     xp: 350,
-//     maxXp: 500,
-//     successStreak: 12,
-//     failedAttempts: 3,
-//     totalCompleted: 28,
-//   });
-
-//   useEffect(() => {
-//     terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-//   }, [history]);
-
-//   // -----------------------------
-//   // SAFE OUTPUT FORMATTER 🔥
-//   // -----------------------------
-//   const formatOutput = (data: any): string => {
-//     if (!data) return 'Empty response';
-
-//     if (typeof data === 'string') return data;
-
-//     if (typeof data === 'number') return String(data);
-
-//     if (typeof data === 'object') {
-//       return (
-//         data.output ||
-//         data.result?.output ||
-//         data.message ||
-//         JSON.stringify(data, null, 2)
-//       );
-//     }
-
-//     return String(data);
-//   };
-
-//   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault();
-//     if (!command.trim()) return;
-
-//     const currentCommand = command;
-//     setCommand('');
-//     setLoading(true);
-
-//     try {
-//       const res = await api.post('/terminal/', {
-//         command: currentCommand,
-//       });
-
-//       setHistory((prev) => [
-//         ...prev,
-//         {
-//           command: currentCommand,
-//           output: formatOutput(res.data),
-//         },
-//       ]);
-//     } catch (err: any) {
-//       setHistory((prev) => [
-//         ...prev,
-//         {
-//           command: currentCommand,
-//           output: formatOutput(err.response?.data || 'Error'),
-//         },
-//       ]);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const handleRunTask = async () => {
-//     try {
-//       await api.post('/task/', {
-//         title: taskTitle,
-//         description: taskDescription,
-//       });
-
-//       setSuccess(true);
-//       setTaskTitle('');
-//       setTaskDescription('');
-//     } catch {
-//       setError('Failed to create task');
-//     }
-//   };
-
-//   const clearTerminal = () => setHistory([]);
-
-//   const getInitials = () => {
-//     if (user?.first_name && user?.last_name) {
-//       return `${user.first_name[0]}${user.last_name[0]}`.toUpperCase();
-//     }
-//     return user?.username?.[0]?.toUpperCase() || 'U';
-//   };
-
-//   const xpPercentage = (stats.xp / stats.maxXp) * 100;
-
-//   return (
-//     <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column', bgcolor: '#0A0A0A' }}>
-
-//       {/* HEADER */}
-//       <Paper sx={{ bgcolor: '#121212', p: 2 }}>
-//         <Box display="flex" justifyContent="space-between">
-
-//           <Box display="flex" gap={2} alignItems="center">
-//             <Avatar sx={{ bgcolor: '#39FF14' }}>
-//               {getInitials()}
-//             </Avatar>
-
-//             <Box>
-//               <Typography color="white">{user?.username}</Typography>
-
-//               <Chip
-//                 label={`Level ${stats.level}`}
-//                 size="small"
-//                 sx={{ color: '#39FF14' }}
-//               />
-
-//               <LinearProgress
-//                 variant="determinate"
-//                 value={xpPercentage}
-//                 sx={{ width: 200 }}
-//               />
-//             </Box>
-//           </Box>
-
-//         </Box>
-//       </Paper>
-
-//       {/* MAIN */}
-//       <Box sx={{ flex: 1, p: 2, display: 'flex', flexDirection: 'column' }}>
-
-//         {/* TERMINAL */}
-//         <Card sx={{ flex: 1, bgcolor: '#000', overflow: 'hidden' }}>
-//           <CardContent sx={{ height: '100%', overflowY: 'auto' }}>
-
-//             <Typography sx={{ color: '#666' }}>
-//               Cloud Terminal Ready...
-//             </Typography>
-
-//             {history.map((item, i) => (
-//               <Box key={i} mb={2}>
-//                 <Typography sx={{ color: '#39FF14' }}>
-//                   $ {item.command}
-//                 </Typography>
-
-//                 <Typography sx={{ color: '#fff', whiteSpace: 'pre-wrap' }}>
-//                   {item.output}
-//                 </Typography>
-//               </Box>
-//             ))}
-
-//             {loading && (
-//               <Typography color="yellow">
-//                 Processing...
-//               </Typography>
-//             )}
-
-//             <div ref={terminalEndRef} />
-//           </CardContent>
-
-//           {/* INPUT */}
-//           <Box sx={{ display: 'flex', p: 2, gap: 1 }}>
-//             <form onSubmit={handleSubmit} style={{ display: 'flex', width: '100%' }}>
-//               <TextField
-//                 fullWidth
-//                 value={command}
-//                 onChange={(e) => setCommand(e.target.value)}
-//                 placeholder="Enter command..."
-//               />
-
-//               <IconButton type="submit">
-//                 <Send />
-//               </IconButton>
-//             </form>
-
-//             <IconButton onClick={clearTerminal}>
-//               <Trash2 />
-//             </IconButton>
-//           </Box>
-//         </Card>
-
-//       </Box>
-
-//       {/* SNACKBARS */}
-//       <Snackbar open={success} autoHideDuration={2000} onClose={() => setSuccess(false)}>
-//         <Alert severity="success">Task created</Alert>
-//       </Snackbar>
-
-//       <Snackbar open={!!error} autoHideDuration={2000} onClose={() => setError('')}>
-//         <Alert severity="error">{error}</Alert>
-//       </Snackbar>
-
-//     </Box>
-//   );
-// }
