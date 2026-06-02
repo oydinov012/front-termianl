@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Paper, Typography, Avatar, LinearProgress, IconButton, Menu, MenuItem } from '@mui/material';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, LogOut, UserSettings } from 'lucide-react'; // Lucide ikonkalari qo'shildi
 
 interface UserProfile {
   level: number;
@@ -14,9 +14,10 @@ interface UserProfileHeaderProps {
   username?: string;
   profile: UserProfile | null;
   onLogout: () => void;
+  onUpdateProfile: () => void; // 👈 1. Yangi: Profilni update qilish funksiyasi
 }
 
-export const UserProfileHeader: React.FC<UserProfileHeaderProps> = ({ username, profile, onLogout }) => {
+export const UserProfileHeader: React.FC<UserProfileHeaderProps> = ({ username, profile, onLogout, onUpdateProfile }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
@@ -53,8 +54,39 @@ export const UserProfileHeader: React.FC<UserProfileHeaderProps> = ({ username, 
           <IconButton onClick={handleMenu} sx={{ color: '#39FF14' }} title="Sozlamalar"><ChevronDown size={18} /></IconButton>
         </Box>
         
-        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu}>
-          <MenuItem onClick={() => { handleCloseMenu(); onLogout(); }}>Chiqish</MenuItem>
+        {/* Menyuning ichki qismi chiroyli va qorong'u (Dark) dizaynga moslashtirildi */}
+        <Menu 
+          anchorEl={anchorEl} 
+          open={Boolean(anchorEl)} 
+          onClose={handleCloseMenu}
+          PaperProps={{
+            sx: {
+              bgcolor: '#1A1A1A',
+              border: '1px solid rgba(57, 255, 20, 0.2)',
+              color: '#FFF',
+              mt: 1,
+              '& .MuiMenuItem-root': {
+                fontSize: '0.85rem',
+                fontFamily: 'monospace',
+                gap: 1.5,
+                py: 1,
+                px: 2,
+                '&:hover': { bgcolor: 'rgba(57, 255, 20, 0.1)', color: '#39FF14' }
+              }
+            }
+          }}
+        >
+          {/* 🛠️ 1-TUGMA: PROFILNI YANGILASH */}
+          <MenuItem onClick={() => { handleCloseMenu(); onUpdateProfile(); }}>
+            <UserSettings size={16} />
+            Profilni tahrirlash
+          </MenuItem>
+
+          {/* 🚪 2-TUGMA: TIZIMDAN CHIQISH */}
+          <MenuItem onClick={() => { handleCloseMenu(); onLogout(); }} sx={{ color: '#FF4444', '&:hover': { color: '#FF4444 !important', bgcolor: 'rgba(255, 68, 68, 0.1) !important' } }}>
+            <LogOut size={16} />
+            Chiqish
+          </MenuItem>
         </Menu>
       </Box>
     </Paper>

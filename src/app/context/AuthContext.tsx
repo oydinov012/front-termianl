@@ -99,6 +99,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await login(username, password);
     } catch (error) {
       console.error('Ro\'yxatdan o\'tishda xatolik:', error);
+      console.log(error);
+      
       throw error;
     }
   };

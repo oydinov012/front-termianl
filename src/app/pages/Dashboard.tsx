@@ -872,6 +872,7 @@ export default function Dashboard() {
   const [history, setHistory] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [currentDirectory, setCurrentDirectory] = useState('~'); 
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   
   // 🖥 Nano muharriri uchun kerakli statelar
   const [isNanoActive, setIsNanoActive] = useState(false); // Nano rejimi yoqilgan/o'chirilganligi
@@ -904,6 +905,22 @@ export default function Dashboard() {
   // ==========================================
   // 🟢 EFFEKTLAR (Side Effects)
   // ==========================================
+
+  // ==============================
+  //  yuqori o'ng tugma
+  // ===========================
+  const handleOpenUpdateModal = () => {
+  setIsUpdateModalOpen(true); // Profilni o'zgartirish oynasini ochish mantiqi
+};
+
+return (
+  <UserProfileHeader 
+    username={user?.username} 
+    profile={profile} 
+    onLogout={handleLogout} 
+    onUpdateProfile={handleOpenUpdateModal} // 👈 Mana bu yerda yangi funksiyani ulab qo'yasiz
+  />
+);
   
   // 👤 Profil ma'lumotlarini backenddan yuklab olish qismi
   const fetchUserProfile = async () => {
@@ -1083,6 +1100,64 @@ export default function Dashboard() {
 
   const handleLogout = () => { logout(); navigate('/auth'); };
 
+
+  // ─── MANA SHU YERGA JINGALAK QO'SHTIRNOQ YOPILISIDAN KEYIN QO'SHASIZ ───
+
+  // 🔄 Frontendda profilni tahrirlash (Update) funksiyasi:
+  const handleUpdateProfile = async (updatedData: { username: string; email?: string }) => {
+    try {
+      const res = await api.patch('/api/profile1/', updatedData);
+      if (res.data) {
+        setSuccessMessage("Profil muvaffaqiyatli yangilandi! 🔄");
+        setSuccess(true);
+        fetchUserProfile(); // Profilni qayta yuklaydi
+      }
+    } catch (err) {
+      console.error("Yangilashda xato:", err);
+      setError("Profilni yangilab bo'lmadi.");
+    }
+  };
+
+  // ❌ Akkauntni butunlay o'chirish (Delete) funksiyasi:
+  const handleDeleteAccount = async () => {
+    if (window.confirm("Hisobingizni butunlay o'chirmoqchimisiz? Bu amalni ortga qaytarib bo'lmaydi!")) {
+      try {
+        const res = await api.delete('/api/profile1/');
+        // Agar backendda 'detail' bo'lsa res.data.detail, 'message' bo'lsa res.data.message yozing
+        alert(res.data.detail || res.data.message); 
+        handleLogout(); // Tizimdan chiqarib yuborish
+      } catch (err) {
+        setError("Hisobni o'chirishda xatolik yuz berdi.");
+      }
+    }
+  };
+
+  // const handleLogout = () => { logout(); navigate('/auth'); };
+
+  // ==========================================
+  // 🎨 VIZUAL INTERFEYS (UI Render)
+  // ==========================================
+  return (
+    <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column', bgcolor: '#0A0A0A', overflow: 'hidden' }}>
+      
+      {/* 🔝 FOYDALANUVCHI PROFILI BAR (HEADER) */}
+      <UserProfileHeader 
+        username={user?.username} 
+        profile={profile} 
+        onLogout={handleLogout} 
+        // ↙️ Yangi funksiyani sinab ko'rish uchun prompt orqali ulaymiz
+        onUpdateProfile={() => {
+          const newName = prompt("Yangi foydalanuvchi nomini kiriting:", user?.username);
+          if (newName && newName.trim() !== "") {
+            handleUpdateProfile({ username: newName });
+          }
+        }}
+      />
+
+      
+  
+
+
   // ==========================================
   // 🎨 VIZUAL INTERFEYS (UI Render)
   // ==========================================
@@ -1179,6 +1254,7 @@ export default function Dashboard() {
       </Box>
 
       {/* 🔔 STATUS NOTIFICATION (TOAST) TIZIMI */}
+      <Box>
       <Snackbar open={success} autoHideDuration={4000} onClose={() => setSuccess(false)}>
         <Alert severity="success" sx={{ bgcolor: '#121212', color: '#39FF14', border: '1px solid #39FF14' }}>
           {successMessage}
