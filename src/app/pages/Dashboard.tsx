@@ -335,7 +335,7 @@
 
 // //   return (
 // //     <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column', bgcolor: '#0A0A0A', overflow: 'hidden' }}>
-      
+
 // //       {/* 🟢 TOP NAVBAR */}
 // //       <Paper elevation={0} sx={{ bgcolor: '#121212', borderBottom: '1px solid rgba(57, 255, 20, 0.2)', px: 3, py: 1.2, zIndex: 10 }}>
 // //         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
@@ -356,7 +356,7 @@
 // //               </Box>
 // //             </Box>
 // //           </Box>
-          
+
 // //           <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
 // //             <Box sx={{ display: 'flex', gap: 2 }}>
 // //               <Typography variant="caption" sx={{ color: '#B0B0B0' }}>Streak: <span style={{ color: '#39FF14', fontWeight: 'bold' }}>{profile?.success_streak || 0} 🔥</span></Typography>
@@ -364,7 +364,7 @@
 // //             </Box>
 // //             <IconButton onClick={handleMenu} sx={{ color: '#39FF14' }} title="Sozlamalar"><ChevronDown size={18} /></IconButton>
 // //           </Box>
-          
+
 // //           <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu}>
 // //             <MenuItem onClick={handleLogout}>Chiqish</MenuItem>
 // //           </Menu>
@@ -382,7 +382,7 @@
 // //         overflow: 'hidden',
 // //         height: 'calc(100vh - 65px)' 
 // //       }}>
-        
+
 // //         {/* 📦 CHAP TEPADA: TASK PANEL */}
 // //         <Card sx={{ bgcolor: '#121212', border: '1px solid rgba(57, 255, 20, 0.15)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 // //           <Box sx={{ bgcolor: '#1A1A1A', px: 2, py: 1, borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -455,7 +455,7 @@
 
 // //           {/* Terminal Asosiy Tana Qismi (Zich va ixcham dizayn) */}
 // //           <Box onClick={focusInput} sx={{ flex: 1, overflowY: 'auto', p: 2, display: 'flex', flexDirection: 'column', position: 'relative' }}>
-            
+
 // //             {/* 🔴 NANO MUHIT REJIMI OCHILGANDA */}
 // //             {isNanoActive ? (
 // //               <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}>
@@ -590,17 +590,17 @@
 //   const [history, setHistory] = useState<any[]>([]);
 //   const [loading, setLoading] = useState(false);
 //   const [currentDirectory, setCurrentDirectory] = useState('~'); 
-  
+
 //   // 🖥 Nano muharriri uchun kerakli statelar
 //   const [isNanoActive, setIsNanoActive] = useState(false); // Nano rejimi yoqilgan/o'chirilganligi
 //   const [nanoFileName, setNanoFileName] = useState('');     // Ochilgan fayl nomi
 //   const [nanoContent, setNanoContent] = useState('');       // Fayl ichidagi matn (Kontent)
-  
+
 //   // 📋 Topshiriq va foydalanuvchi ma'lumotlari statelari
 //   const [activeTask, setActiveTask] = useState<any>(null);
 //   const [userStructure, setUserStructure] = useState<any>(null);
 //   const [profile, setProfile] = useState<any>(null);
-  
+
 //   // 🔔 Bildirishnomalar statelari (Toast Notification)
 //   const [success, setSuccess] = useState(false);
 //   const [successMessage, setSuccessMessage] = useState('');
@@ -622,7 +622,7 @@
 //   // ==========================================
 //   // 🟢 EFFEKTLAR (Side Effects)
 //   // ==========================================
-  
+
 //   // 👤 Profil ma'lumotlarini backenddan yuklab olish qismi
 //   const fetchUserProfile = async () => {
 //     try {
@@ -651,11 +651,11 @@
 //         if (e.ctrlKey && e.key.toLowerCase() === 'x') {
 //           e.preventDefault();
 //           setIsNanoActive(false); // Nano rejimini o'chirish
-          
+
 //           // Yangi fayllar ochilganda eski matn qolib ketmasligi uchun statelarni tozalaymiz
 //           setNanoContent(''); 
 //           setNanoFileName('');
-          
+
 //           setHistory(prev => [...prev, { 
 //             command: `nano ${nanoFileName}`, 
 //             output: 'GNU nano muharriridan chiqildi.', 
@@ -679,7 +679,7 @@
 //         command: `nano ${nanoFileName}`, 
 //         content: nanoContent 
 //       });
-      
+
 //       if (res.data.result?.status) {
 //         setSuccessMessage('Fayl muvaffaqiyatli saqlandi! 💾');
 //         setSuccess(true);
@@ -715,7 +715,7 @@
 //     if (currentCommand.startsWith('nano ')) {
 //       const fileName = currentCommand.split(/\s+/)[1] || 'unnamed.txt';
 //       setNanoFileName(fileName);
-      
+
 //       try {
 //         const res = await api.post('/terminal/', { command: currentCommand });
 //         const responseData = res.data;
@@ -724,7 +724,7 @@
 //         if (responseData.result && responseData.result.type === 'nano') {
 //           // Backend javobidagi eski content mavjud bo'lsa uni oladi, aks holda bo'sh satr
 //           const oldContent = responseData.result.content !== undefined ? responseData.result.content : '';
-          
+
 //           setNanoContent(oldContent); // 👈 Eski ma'lumotlar saqlangan holda editorga yuklanadi!
 //           setIsNanoActive(true);      // Nano oynasini vizual ochish
 //         }
@@ -771,13 +771,13 @@
 //   // ==========================================
 //   return (
 //     <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column', bgcolor: '#0A0A0A', overflow: 'hidden' }}>
-      
+
 //       {/* 👤 YUQORI PANEL: Profil va Foydalanuvchi ma'lumotlari */}
 //       <UserProfileHeader username={user?.username} profile={profile} onLogout={() => { logout(); navigate('/auth'); }} />
 
 //       {/* 🎛 ASOSIY ISHCHI SETKA (Grid Layout) */}
 //       <Box sx={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '42% 58%', gap: 2, p: 2, height: 'calc(100vh - 65px)', overflow: 'hidden' }}>
-        
+
 //         {/* 📝 CHAP TOMON YUQORI: Topshiriqlar paneli */}
 //         <TaskPanel activeTask={activeTask} onGetTask={async () => {
 //           try {
@@ -799,7 +799,7 @@
 
 //         {/* 🖥 PASTKI BUTUN PANEL: Terminal va Nano Muharriri oynasi */}
 //         <Card sx={{ gridColumn: '1 / -1', bgcolor: '#000', border: '1px solid rgba(57, 255, 20, 0.25)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-          
+
 //           {/* Terminal / Nano sarlavha qismi */}
 //           <Box sx={{ bgcolor: '#1A1A1A', px: 2, py: 0.8, display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(57, 255, 20, 0.15)' }}>
 //             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -859,7 +859,7 @@ import { UserProfileHeader } from '../components/UserProfileHeader';
 import { TaskPanel } from '../components/TaskPanel';
 import { NanoEditor } from '../components/NanoEditor';
 import { TerminalConsole } from '../components/TerminalConsole';
-import FileListVisualizer from '../components/FileListVisualizer'; 
+import FileListVisualizer from '../components/FileListVisualizer';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
@@ -871,19 +871,19 @@ export default function Dashboard() {
   const [command, setCommand] = useState('');
   const [history, setHistory] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const [currentDirectory, setCurrentDirectory] = useState('~'); 
+  const [currentDirectory, setCurrentDirectory] = useState('~');
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-  
+
   // 🖥 Nano muharriri uchun kerakli statelar
   const [isNanoActive, setIsNanoActive] = useState(false); // Nano rejimi yoqilgan/o'chirilganligi
   const [nanoFileName, setNanoFileName] = useState('');     // Ochilgan fayl nomi
   const [nanoContent, setNanoContent] = useState('');       // Fayl ichidagi matn (Kontent)
-  
+
   // 📋 Topshiriq va foydalanuvchi ma'lumotlari statelari
   const [activeTask, setActiveTask] = useState<any>(null);
   const [userStructure, setUserStructure] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
-  
+
   // 🔔 Bildirishnomalar statelari (Toast Notification)
   const [success, setSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
@@ -909,19 +909,19 @@ export default function Dashboard() {
   // ==============================
   //  yuqori o'ng tugma
   // ===========================
-  const handleOpenUpdateModal = () => {
-  setIsUpdateModalOpen(true); // Profilni o'zgartirish oynasini ochish mantiqi
-};
+  //   const handleOpenUpdateModal = () => {
+  //   setIsUpdateModalOpen(true); // Profilni o'zgartirish oynasini ochish mantiqi
+  // };
 
-return (
-  <UserProfileHeader 
-    username={user?.username} 
-    profile={profile} 
-    onLogout={handleLogout} 
-    onUpdateProfile={handleOpenUpdateModal} // 👈 Mana bu yerda yangi funksiyani ulab qo'yasiz
-  />
-);
-  
+  // return (
+  //   <UserProfileHeader 
+  //     username={user?.username} 
+  //     profile={profile} 
+  //     onLogout={handleLogout} 
+  //     onUpdateProfile={handleOpenUpdateModal} // 👈 Mana bu yerda yangi funksiyani ulab qo'yasiz
+  //   />
+  // );
+
   // 👤 Profil ma'lumotlarini backenddan yuklab olish qismi
   const fetchUserProfile = async () => {
     try {
@@ -950,15 +950,15 @@ return (
         if (e.ctrlKey && e.key.toLowerCase() === 'x') {
           e.preventDefault();
           setIsNanoActive(false); // Nano rejimini o'chirish
-          
-          setHistory(prev => [...prev, { 
-            command: `nano ${nanoFileName}`, 
-            output: 'GNU nano muharriridan chiqildi.', 
-            timestamp: new Date() 
+
+          setHistory(prev => [...prev, {
+            command: `nano ${nanoFileName}`,
+            output: 'GNU nano muharriridan chiqildi.',
+            timestamp: new Date()
           }]);
 
           // Statelarni tozalash (Keyingi fayl toza ochilishi uchun)
-          setNanoContent(''); 
+          setNanoContent('');
           setNanoFileName('');
         }
       }
@@ -975,23 +975,23 @@ return (
     setLoading(true);
     try {
       // 🔥 BACKEND TALAB QILGAN FORMAT: type, path va content kalitlari yuboriladi
-      const res = await api.post('/terminal/', { 
+      const res = await api.post('/terminal/', {
         type: "nano_save",
         path: nanoFileName,
-        content: nanoContent 
+        content: nanoContent
       });
-      
+
       if (res.data) {
         setSuccessMessage('Fayl muvaffaqiyatli saqlandi! 💾');
         setSuccess(true);
         // Saqlangandan keyin fayl tizimi yangilansa, strukturani o'zgartiramiz
         if (res.data.structure) setUserStructure(res.data.structure);
       }
-    } catch (err) { 
+    } catch (err) {
       console.error("Saqlashda xato:", err);
-      setError('Faylni saqlashda ichki xatolik yuz berdi.'); 
-    } finally { 
-      setLoading(false); 
+      setError('Faylni saqlashda ichki xatolik yuz berdi.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -1017,11 +1017,11 @@ return (
     if (currentCommand.startsWith('nano ')) {
       const fileName = currentCommand.split(/\s+/)[1] || 'unnamed.txt';
       setNanoFileName(fileName);
-      
+
       try {
-        const res = await api.post('/terminal/', { 
+        const res = await api.post('/terminal/', {
           type: "regular_command", // backend logikasiga mos ravishda buyruq turi
-          command: currentCommand 
+          command: currentCommand
         });
         const responseData = res.data;
 
@@ -1032,7 +1032,7 @@ return (
         } else if (responseData.content !== undefined) {
           existingContent = responseData.content;
         }
-        
+
         setNanoContent(existingContent); // 👈 Eski ma'lumotlar saqlangan holda yuklanadi!
         setIsNanoActive(true);      // Nano oynasini vizual ochish
 
@@ -1043,17 +1043,17 @@ return (
       } catch (err) {
         console.error("Faylni yuklashda xato:", err);
         setHistory((prev) => [...prev, { command: currentCommand, output: "Faylni ochib bo'lmadi.", timestamp: new Date() }]);
-      } finally { 
-        setLoading(false); 
+      } finally {
+        setLoading(false);
       }
       return;
     }
 
     // ⚙️ ODDIY BUYRUQLAR IJROSI (ls, cd, mkdir, touch, rm va hkz)
     try {
-      const res = await api.post('/terminal/', { 
+      const res = await api.post('/terminal/', {
         type: "regular_command",
-        command: currentCommand 
+        command: currentCommand
       });
       const responseData = res.data;
 
@@ -1075,8 +1075,8 @@ return (
       console.error("Buyruq xatosi:", err);
       const errText = err.response?.data?.detail || err.response?.data?.output || 'Xatolik: Buyruq ijrosida muammo.';
       setHistory((prev) => [...prev, { command: currentCommand, output: errText, timestamp: new Date() }]);
-    } finally { 
-      setLoading(false); 
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -1089,7 +1089,7 @@ return (
       const res = await api.get('/task/');
       if (res.data) {
         setActiveTask(res.data);
-        setUserStructure([]); 
+        setUserStructure([]);
       }
     } catch (err) {
       setError("Yangi topshiriqni yuklab bo'lmadi.");
@@ -1124,7 +1124,7 @@ return (
       try {
         const res = await api.delete('/api/profile1/');
         // Agar backendda 'detail' bo'lsa res.data.detail, 'message' bo'lsa res.data.message yozing
-        alert(res.data.detail || res.data.message); 
+        alert(res.data.detail || res.data.message);
         handleLogout(); // Tizimdan chiqarib yuborish
       } catch (err) {
         setError("Hisobni o'chirishda xatolik yuz berdi.");
@@ -1137,25 +1137,25 @@ return (
   // ==========================================
   // 🎨 VIZUAL INTERFEYS (UI Render)
   // ==========================================
-  return (
-    <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column', bgcolor: '#0A0A0A', overflow: 'hidden' }}>
-      
-      {/* 🔝 FOYDALANUVCHI PROFILI BAR (HEADER) */}
-      <UserProfileHeader 
-        username={user?.username} 
-        profile={profile} 
-        onLogout={handleLogout} 
-        // ↙️ Yangi funksiyani sinab ko'rish uchun prompt orqali ulaymiz
-        onUpdateProfile={() => {
-          const newName = prompt("Yangi foydalanuvchi nomini kiriting:", user?.username);
-          if (newName && newName.trim() !== "") {
-            handleUpdateProfile({ username: newName });
-          }
-        }}
-      />
+  // return (
+  //   <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column', bgcolor: '#0A0A0A', overflow: 'hidden' }}>
 
-      
-  
+  //     {/* 🔝 FOYDALANUVCHI PROFILI BAR (HEADER) */}
+  //     <UserProfileHeader 
+  //       username={user?.username} 
+  //       profile={profile} 
+  //       onLogout={handleLogout} 
+  //       // ↙️ Yangi funksiyani sinab ko'rish uchun prompt orqali ulaymiz
+  //       onUpdateProfile={() => {
+  //         const newName = prompt("Yangi foydalanuvchi nomini kiriting:", user?.username);
+  //         if (newName && newName.trim() !== "") {
+  //           handleUpdateProfile({ username: newName });
+  //         }
+  //       }}
+  //     />
+
+
+
 
 
   // ==========================================
@@ -1163,30 +1163,31 @@ return (
   // ==========================================
   return (
     <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column', bgcolor: '#0A0A0A', overflow: 'hidden' }}>
-      
+
       {/* 🔝 FOYDALANUVCHI PROFILI BAR (HEADER) */}
-      <UserProfileHeader 
-        username={user?.username} 
-        profile={profile} 
-        onLogout={handleLogout} 
-      />
+      <UserProfileHeader
+        username={user?.username}
+        profile={profile}
+        onLogout={handleLogout} onUpdateProfile={function (): void {
+          throw new Error('Function not implemented.');
+        }} />
 
       {/* 📊 ASOSI_ISHCHI PANELI */}
-      <Box sx={{ 
-        flex: 1, 
-        display: 'grid', 
-        gridTemplateColumns: '1fr 1fr', 
-        gridTemplateRows: '42% 58%', 
-        gap: 2, 
-        p: 2, 
+      <Box sx={{
+        flex: 1,
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gridTemplateRows: '42% 58%',
+        gap: 2,
+        p: 2,
         overflow: 'hidden',
-        height: 'calc(100vh - 65px)' 
+        height: 'calc(100vh - 65px)'
       }}>
-        
+
         {/* 📦 CHAP TEPADA: JORIY TOPSHIRIQ PANELI */}
-        <TaskPanel 
-          activeTask={activeTask} 
-          onGetTask={handleGetTask} 
+        <TaskPanel
+          activeTask={activeTask}
+          onGetTask={handleGetTask}
         />
 
         {/* 📦 O'NG TEPADA: VIZUAL FAYLLAR IERARXIYASI */}
@@ -1201,13 +1202,13 @@ return (
         </Card>
 
         {/* 📟 PASTI: TERMINAL VA NANO EDITOR OYNASI */}
-        <Card sx={{ 
-          gridColumn: '1 / -1', 
-          bgcolor: '#000', 
-          border: '1px solid rgba(57, 255, 20, 0.25)', 
-          display: 'flex', 
-          flexDirection: 'column', 
-          overflow: 'hidden' 
+        <Card sx={{
+          gridColumn: '1 / -1',
+          bgcolor: '#000',
+          border: '1px solid rgba(57, 255, 20, 0.25)',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden'
         }}>
           {/* Terminal / Nano Sarlavhasi */}
           <Box sx={{ bgcolor: '#1A1A1A', px: 2, py: 0.8, borderBottom: '1px solid rgba(57, 255, 20, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -1227,45 +1228,45 @@ return (
           {/* Dinamik Oyna Almashinuvi (Terminal yoki Nano) */}
           <Box onClick={focusInput} sx={{ flex: 1, overflowY: 'auto', p: 2, display: 'flex', flexDirection: 'column', position: 'relative' }}>
             {isNanoActive ? (
-  /* 📝 NANO EDITOR INTEGRATSIYASI */
-  <NanoEditor 
-    fileName={nanoFileName}
-    content={nanoContent}
-    setContent={setNanoContent}
-    textAreaRef={nanoTextAreaRef as any}
-  />
-) : (
-  /* 🟢 KLASSIK TERMINAL OYNASI */
-  <TerminalConsole 
-    history={history} 
-    loading={loading} 
-    currentDirectory={currentDirectory} 
-    command={command}
-    setCommand={setCommand}
-    inputRef={inputRef} // 👈 To'g'rilandi: 'nanoTextAreaRef as any' o'rniga haqiqiy inputRef berildi!
-    onSubmit={handleCommandSubmit}
-    terminalEndRef={terminalEndRef}
-  />
-)}
+              /* 📝 NANO EDITOR INTEGRATSIYASI */
+              <NanoEditor
+                fileName={nanoFileName}
+                content={nanoContent}
+                setContent={setNanoContent}
+                textAreaRef={nanoTextAreaRef as any}
+              />
+            ) : (
+              /* 🟢 KLASSIK TERMINAL OYNASI */
+              <TerminalConsole
+                history={history}
+                loading={loading}
+                currentDirectory={currentDirectory}
+                command={command}
+                setCommand={setCommand}
+                inputRef={inputRef} // 👈 To'g'rilandi: 'nanoTextAreaRef as any' o'rniga haqiqiy inputRef berildi!
+                onSubmit={handleCommandSubmit}
+                terminalEndRef={terminalEndRef}
+              />
+            )}
           </Box>
 
-          
+
         </Card>
       </Box>
 
       {/* 🔔 STATUS NOTIFICATION (TOAST) TIZIMI */}
       <Box>
-      <Snackbar open={success} autoHideDuration={4000} onClose={() => setSuccess(false)}>
-        <Alert severity="success" sx={{ bgcolor: '#121212', color: '#39FF14', border: '1px solid #39FF14' }}>
-          {successMessage}
-        </Alert>
-      </Snackbar>
+        <Snackbar open={success} autoHideDuration={4000} onClose={() => setSuccess(false)}>
+          <Alert severity="success" sx={{ bgcolor: '#121212', color: '#39FF14', border: '1px solid #39FF14' }}>
+            {successMessage}
+          </Alert>
+        </Snackbar>
 
-      <Snackbar open={!!error} autoHideDuration={4000} onClose={() => setError('')}>
-        <Alert severity="error" sx={{ bgcolor: '#121212', color: '#FF4444', border: '1px solid #FF4444' }}>
-          {error}
-        </Alert>
-      </Snackbar>
-    </Box>
-  );
-}
+        <Snackbar open={!!error} autoHideDuration={4000} onClose={() => setError('')}>
+          <Alert severity="error" sx={{ bgcolor: '#121212', color: '#FF4444', border: '1px solid #FF4444' }}>
+            {error}
+          </Alert>
+        </Snackbar>
+      </Box> </Box>
+      );
+      }

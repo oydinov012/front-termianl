@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Paper, Typography, Avatar, LinearProgress, IconButton, Menu, MenuItem } from '@mui/material';
-import { ChevronDown, LogOut, UserSettings } from 'lucide-react'; // Lucide ikonkalari qo'shildi
+import { ChevronDown, LogOut, Settings } from 'lucide-react'; // Lucide ikonkalari qo'shildi
 
 interface UserProfile {
   level: number;
@@ -78,7 +78,7 @@ export const UserProfileHeader: React.FC<UserProfileHeaderProps> = ({ username, 
         >
           {/* 🛠️ 1-TUGMA: PROFILNI YANGILASH */}
           <MenuItem onClick={() => { handleCloseMenu(); onUpdateProfile(); }}>
-            <UserSettings size={16} />
+            <Settings size={16} />
             Profilni tahrirlash
           </MenuItem>
 
