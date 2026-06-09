@@ -10,23 +10,24 @@ export default function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
-  // 🔴 isAuthenticated holatini ham context'dan ajratib olamiz
+  // 🟢 AuthContext'dan kerakli holatlar va login funksiyasini olamiz
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   // ==========================================
   // 🔄 AVTOMATIK YO'NALTIRISH (Xavfsizlik sirti)
   // ==========================================
-  // Agar foydalanuvchi muvaffaqiyatli login bo'lsa va `user` statusi yangilansa,
-  // ushbu useEffect uni darhol asosiy sahifaga xavfsiz o'tkazib yuboradi.
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/');
     }
   }, [isAuthenticated, navigate]);
 
+
+
+
   // ==========================================
-  // 🚀 FORM SUBMIT JALAYONI
+  // 🚀 FORM SUBMIT JARAYONI
   // ==========================================
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,14 +37,15 @@ export default function Login() {
     setLoading(true);
 
     try {
-      // 1. Tizimga kirish va profil ma'lumotlarini yuklashni kutish
+      // 1. AuthContext ichidagi login funksiyasini chaqiramiz (U backenddan token va profilni tortadi)
       await login(username, password);
       
-      // 2. Muvaffaqiyatli o'tgandan so'ng yo'naltirish
+      // 2. Muvaffaqiyatli o'tgandan so'ng asosiy sahifaga yo'naltirish
       navigate('/');
     } catch (err: any) {
       console.error("Login xatoligi:", err);
-      setError(err.response?.data?.detail || 'Login muvaffaqiyatsiz. Iltimos, qayta urinib ko\'ring.');
+      // Backenddan kelgan aniq xatolik xabarini ko'rsatish, aks holda standart matn
+      setError(err.response?.data?.detail || err.response?.data?.message || 'Foydalanuvchi nomi yoki parol xato!');
     } finally {
       setLoading(false);
     }
@@ -51,23 +53,23 @@ export default function Login() {
 
   return (
     <Box className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      <Paper elevation={3} className="p-8 max-w-md w-full mx-4">
+      <Paper elevation={3} className="p-8 max-w-md w-full mx-4" sx={{ bgcolor: '#ffffff', borderRadius: 2 }}>
         
         {/* LOGO QISMI */}
         <Box className="flex items-center justify-center mb-6">
           <Terminal className="w-10 h-10 text-green-500 mr-2" />
-          <Typography variant="h4" component="h1" className="font-bold text-gray-800">
+          <Typography variant="h4" component="h1" className="font-bold text-gray-800" sx={{ fontWeight: 'bold' }}>
             Linux CLI
           </Typography>
         </Box>
 
-        <Typography variant="h5" className="mb-6 text-center text-gray-700">
+        <Typography variant="h5" className="mb-6 text-center text-gray-700" sx={{ mb: 3 }}>
           Tizimga kirish
         </Typography>
 
-        {/* XATOLIK CHIQSAY KO'RSATISH */}
+        {/* XATOLIK STRUKTURASI */}
         {error && (
-          <Alert severity="error" className="mb-4">
+          <Alert severity="error" className="mb-4" sx={{ mb: 2 }}>
             {error}
           </Alert>
         )}
@@ -81,10 +83,10 @@ export default function Login() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
-            className="mb-4"
             margin="normal"
             disabled={loading}
-            autoComplete="username" // 👈 2-skrinshotdagi sariq DOM ogohlantirishini yo'qotadi
+            autoComplete="username" // 👈 Brauzer ogohlantirishini yo'qotadi
+            sx={{ mb: 2 }}
           />
 
           <TextField
@@ -95,10 +97,10 @@ export default function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="mb-4"
             margin="normal"
             disabled={loading}
-            autoComplete="current-password" // 👈 Brauzer parolni eslab qolishi va warning chiqmasligi uchun
+            autoComplete="current-password" // 👈 Parolni eslab qolish xavfsizligi uchun
+            sx={{ mb: 3 }}
           />
 
           <Button
@@ -108,16 +110,16 @@ export default function Login() {
             color="primary"
             size="large"
             disabled={loading}
-            className="mt-4 mb-4"
             startIcon={loading ? <Loader className="w-4 h-4 animate-spin" /> : undefined}
+            sx={{ py: 1.5, mb: 2, textTransform: 'none', fontSize: '1rem' }}
           >
             {loading ? 'Yuklanmoqda...' : 'Kirish'}
           </Button>
 
           {/* RO'YXATDAN O'TISH LINKI */}
-          <Typography variant="body2" className="text-center text-gray-600">
+          <Typography variant="body2" className="text-center text-gray-600" sx={{ mt: 2, textAlign: 'center' }}>
             Akkauntingiz yo'qmi?{' '}
-            <Link to="/register" className="text-blue-600 hover:underline">
+            <Link to="/register" style={{ color: '#1976d2', textDecoration: 'none', fontWeight: 500 }}>
               Ro'yxatdan o'tish
             </Link>
           </Typography>
