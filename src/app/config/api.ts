@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL =  'https://terminaleditor.duckdns.org/';
+const API_BASE_URL = 'https://api.linux1.uz/';
 // import.meta.env.VITE_API_URL ||
 
 export const api = axios.create({
